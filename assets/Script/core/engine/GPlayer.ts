@@ -35,6 +35,6 @@ export default class GPlayer {
     init(data: IPlayerInfo) {
         this._data = data;
         this.name = data.name;
-        this.color = PlayerColor[data.index];
+        this.color = PlayerColor[this.index];
     }
 }

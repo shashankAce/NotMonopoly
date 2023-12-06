@@ -42,8 +42,9 @@ export default class BoardController extends LayoutController implements GameEve
         this.gameEngine = new GameEngine();
     }
 
-    start(): void {
-        super.start();
+    protected createBoard(jsonAsset: cc.JsonAsset): void {
+        super.createBoard(jsonAsset);
+
         this.registerEvents();
         this.createDice();
 
@@ -121,7 +122,7 @@ export default class BoardController extends LayoutController implements GameEve
         pDataArr.forEach((pData, index) => {
             // Creating players
             let player = new Player();
-            player.init(pData.data)
+            player.init(pData);
             this.player_array.push(player);
 
             // Adding player tab icon
@@ -154,23 +155,20 @@ export default class BoardController extends LayoutController implements GameEve
 
 
     getDummyPlayers() {
-        let name_arrr = ["Anshu", "Mini"];
-        let playerData: IPlayerInfo = {
-            name: "",
-            id: 0,
-            profileUrl: "www.google.com",
-            isBot: false,
-            index: 0
-        }
-        let players: IPlayerInfo[] = [];
-        for (let index = 0; index < name_arrr.length; index++) {
-            const name = name_arrr[index];
-            playerData.name = name;
-            playerData.isBot = false;
-            players.push(playerData);
-        }
-        return players;
+        let playerData = [
+            {
+                name: "Anshu",
+                id: 0,
+                profileUrl: "www.google.com",
+                isBot: false
+            },
+            {
+                name: "Mini",
+                id: 0,
+                profileUrl: "www.google.com",
+                isBot: false
+            }
+        ];
+        return playerData;
     }
-
-
 }

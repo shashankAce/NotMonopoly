@@ -42,7 +42,7 @@ export default class GameEngine implements GameEvents {
 
         // Creating property map 
         propertyInfo.forEach((value, index) => {
-            this.property_map.set(value.index.toExponential.toString(), value);
+            this.property_map.set(value.index.toString(), value);
         });
 
         // Creating players 

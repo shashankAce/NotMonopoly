@@ -1,5 +1,6 @@
 import { IPlayerInfo, PlayerColor, TabPosition } from "../Config";
 import Pawn from "../Pawn";
+import GPlayer from "../core/engine/GPlayer";
 import UserTab from "./UserTab";
 
 const { ccclass, property } = cc._decorator;
@@ -10,6 +11,8 @@ export default class Player {
     private _id: string;
     private _tab: UserTab;
     private _pawn: Pawn;
+    public index: number;
+
     //
     //
     private data: IPlayerInfo
@@ -28,7 +31,7 @@ export default class Player {
         this._tab = v;
 
         if (this.data) {
-            this._tab.node.setPosition(TabPosition[this.data.index]);
+            this._tab.node.setPosition(TabPosition[this.index]);
         } else {
             cc.warn("Player data not initialized");
         }
@@ -54,8 +57,9 @@ export default class Player {
         this._id = v;
     }
 
-    init(data: IPlayerInfo) {
-        this.data = data;
-        this.color = PlayerColor[data.index];
+    init(gplayer: GPlayer) {
+        this.data = gplayer.data;
+        this.index = gplayer.index;
+        this.color = PlayerColor[gplayer.index];
     }
 }

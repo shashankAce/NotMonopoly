@@ -35,7 +35,6 @@ export interface IPlayerInfo {
     id: number;
     profileUrl: string;
     isBot: boolean;
-    index: number;
 }
 
 export const tilePos = [
