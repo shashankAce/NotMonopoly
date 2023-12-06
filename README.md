@@ -1,2 +1,2 @@
-# NotMonopoly
-Its not a monopoly game
+# hello-world
+Hello world new project template.

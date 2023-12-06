@@ -1,0 +1,463 @@
+{
+    "cities": [
+        {
+            "name": "LUDHINA",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 0
+        },
+        {
+            "name": "PATNA",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 1
+        },
+        {
+            "name": "NAGPUR",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 3
+        },
+        {
+            "name": "DELHI",
+            "price": 300,
+            "rent": 150,
+            "build": 100,
+            "type": "CITY",
+            "index": 6
+        },
+        {
+            "name": "MUMBAI",
+            "price": 300,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 8
+        },
+        {
+            "name": "INDORE",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 10
+        },
+        {
+            "name": "LUCKNOW",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 12
+        },
+        {
+            "name": "GURUGRAM",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 15
+        },
+        {
+            "name": "MATHURA",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 17
+        },
+        {
+            "name": "CHANDIGRAH",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 18
+        },
+        {
+            "name": "AGRA",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 20
+        },
+        {
+            "name": "HYDERABAD",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 22
+        },
+        {
+            "name": "KOLKATA",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 23
+        },
+        {
+            "name": "CHENNAI",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 25
+        },
+        {
+            "name": "BENGALURU",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 27
+        },
+        {
+            "name": "HYDERABAD",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 28
+        },
+        {
+            "name": "GUWAHATI",
+            "price": 60,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 30
+        },
+        {
+            "name": "PANJI",
+            "price": 60,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 32
+        },
+        {
+            "name": "Shimla",
+            "price": 60,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 33
+        },
+        {
+            "name": "JAIPUR",
+            "price": 250,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 35
+        },
+        {
+            "name": "BHOPAL",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 36
+        },
+        {
+            "name": "PUNE",
+            "price": 140,
+            "rent": 16,
+            "house": [
+                50,
+                150,
+                450,
+                625,
+                750
+            ],
+            "build": 100,
+            "type": "CITY",
+            "index": 38
+        }
+    ],
+    "station": [
+        {
+            "name": "ELECTRIC",
+            "price": 150,
+            "rent": 75,
+            "logo": "ELECTRIC",
+            "type": "UTIL",
+            "index": 2
+        },
+        {
+            "name": "DELHI METRO",
+            "logo": "METRO",
+            "price": 200,
+            "rent": 100,
+            "type": "STATION",
+            "index": 4
+        },
+        {
+            "name": "CHANCE",
+            "logo": "CHANCE",
+            "price": 0,
+            "rent": 0,
+            "type": "CHANCE",
+            "index": 5
+        },
+        {
+            "name": "CHEST",
+            "logo": "CHEST",
+            "price": 0,
+            "rent": 0,
+            "type": "CHEST",
+            "index": 7
+        },
+        {
+            "name": "WATER",
+            "logo": "WATER",
+            "price": 200,
+            "rent": 100,
+            "type": "UTIL",
+            "index": 11
+        },
+        {
+            "name": "PETROL",
+            "logo": "ELECTRIC",
+            "price": 200,
+            "rent": 100,
+            "type": "UTIL",
+            "index": 13
+        },
+        {
+            "name": "KOLKATA METRO",
+            "logo": "METRO",
+            "price": 200,
+            "rent": 100,
+            "type": "STATION",
+            "index": 14
+        },
+        {
+            "name": "WATER",
+            "logo": "WATER",
+            "price": 150,
+            "rent": 75,
+            "type": "UTIL",
+            "index": 16
+        },
+        {
+            "name": "CHANCE",
+            "logo": "CHANCE",
+            "price": 0,
+            "rent": 0,
+            "type": "CHANCE",
+            "index": 21
+        },
+        {
+            "name": "LUCKNOW METRO",
+            "logo": "METRO",
+            "price": 200,
+            "rent": 100,
+            "type": "STATION",
+            "index": 24
+        },
+        {
+            "name": "TAX",
+            "logo": "TAX",
+            "price": 100,
+            "rent": 0,
+            "type": "UTIL",
+            "index": 26
+        },
+        {
+            "name": "CHEST",
+            "logo": "CHEST",
+            "price": 0,
+            "rent": 0,
+            "type": "CHEST",
+            "index": 31
+        },
+        {
+            "name": "MUMBAI METRO",
+            "logo": "METRO",
+            "price": 200,
+            "rent": 100,
+            "type": "STATION",
+            "index": 34
+        },
+        {
+            "name": "SPIN",
+            "logo": "SPIN",
+            "price": 0,
+            "rent": 0,
+            "type": "UTIL",
+            "index": 37
+        }
+    ],
+    "corner": [
+        {
+            "name": "PARKING",
+            "type": "CORNER",
+            "index": 9
+        },
+        {
+            "name": "JAIL",
+            "type": "CORNER",
+            "index": 39
+        },
+        {
+            "name": "COURT",
+            "type": "CORNER",
+            "index": 19
+        },
+        {
+            "name": "GO",
+            "type": "CORNER",
+            "index": 29
+        }
+    ]
+}

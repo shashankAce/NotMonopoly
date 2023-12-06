@@ -1,0 +1,46 @@
+{
+    "chance": [
+        {
+            "msg": "You got 100 rs reward",
+            "credit": 100,
+            "move": 0
+        },
+        {
+            "msg": "You got 200 rs reward",
+            "credit": 200,
+            "move": 0
+        },
+        {
+            "msg": "You got 100 rs reward",
+            "credit": 100,
+            "move": 0
+        },
+        {
+            "msg": "You got 100 rs reward",
+            "credit": 100,
+            "move": 0
+        },
+        {
+            "msg": "You got 100 rs reward",
+            "credit": 100,
+            "move": 0
+        }
+    ],
+    "chest": [
+        {
+            "msg": "You got 200 rs reward",
+            "credit": 200,
+            "move": 0
+        },
+        {
+            "msg": "Pay parking charge 200",
+            "credit": 200,
+            "move": 0
+        },
+        {
+            "msg": "You got 100 rs reward",
+            "credit": 100,
+            "move": 0
+        }
+    ]
+}
