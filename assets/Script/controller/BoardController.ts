@@ -144,15 +144,10 @@ export default class BoardController extends LayoutController implements GameEve
 
     protected registerEvents(): void {
         super.registerEvents();
-        clientEvent.on(Events.ShowStationInfo, this.showStationInfo, this);
-        clientEvent.on(Events.ShowCityInfo, this.showCityInfo, this);
-        clientEvent.on(Events.HidePopup, this.hidePopup, this);
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
-        //
         clientEvent.on(UIEvents.spinDice, this.onSpinDice, this);
     }
-
 
     getDummyPlayers() {
         let playerData = [

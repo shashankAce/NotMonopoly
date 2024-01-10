@@ -1,6 +1,6 @@
 import { E_Popup } from "../controller/PopupController";
 import { clientEvent } from "./ClientEvent";
-import { EventName } from "./EventNames";
+import { Events } from "./EventNames";
 
 const { ccclass, property } = cc._decorator;
 
@@ -43,7 +43,7 @@ export default class Popup extends cc.Component {
     }
 
     onClose() {
-        clientEvent.dispatchEvent(EventName.HidePopup);
+        clientEvent.dispatchEvent(Events.HidePopup);
     }
 
     async hide() {
