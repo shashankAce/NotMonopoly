@@ -3845,6 +3845,9 @@
     "mortgage_value": {
       "__id__": 25
     },
+    "closeBtn": {
+      "__id__": 98
+    },
     "building_lvl": [
       {
         "__id__": 33

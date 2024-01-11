@@ -4,27 +4,29 @@ import { clientEvent } from "../ClientEvent";
 import { UIEvents, Events } from "../EventNames";
 import { GameEvents } from "../GameEvents";
 import GPlayer from "./GPlayer";
+import GProperty from "./GProperty";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameEngine implements GameEvents {
 
-    private interval;
-    private _turnIndex: number = 0;
+    private interval: number;
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
-    private players_arr: GPlayer[] = [];
+
     private listCheckWin: ActionCheckWin[] = [];
 
-    private property_map: Map<string, IProperty>;
+    private _turnIndex: number = 0;
+    public players_arr: GPlayer[] = [];
+    public property_map: Map<string, GProperty>;
 
     constructor() {
         this.registerEvents();
-        this.property_map = new Map<string, IProperty>();
+        this.property_map = new Map<string, GProperty>();
     }
 
-    private get turnIndex(): number {
+    public get turnIndex(): number {
         return this._turnIndex;
     }
 
@@ -42,7 +44,7 @@ export default class GameEngine implements GameEvents {
 
         // Creating property map 
         propertyInfo.forEach((value, index) => {
-            this.property_map.set(value.index.toString(), value);
+            this.property_map.set(value.index.toString(), new GProperty(value));
         });
 
         // Creating players 
@@ -74,15 +76,43 @@ export default class GameEngine implements GameEvents {
         value.push(suffledDiceArr[randInt2]);
         // value.push(randInt1);
         // value.push(randInt2);
-        // this.players_arr[this.turnIndex].pawn.tilePos
-        clientEvent.dispatchEvent(UIEvents.spinDice, value);
+
+        // boradcast dice value to clients
+        this.players_arr[this.turnIndex].diceValue = value;
+        this.players_arr[this.turnIndex].movePawn();
+        clientEvent.dispatchEvent(UIEvents.spinDice);
+        // Now wait for client to move
+        // Next will be done in onMoveEnd fn
     }
 
     onMoveEnd() {
-        // Event from client when player moves 
-
-        clientEvent.dispatchEvent(Events.ShowBuyProperty);
+        // Event from client when player moves
+        let player = this.players_arr[this.turnIndex];
+        let property = this.property_map.get(player.pawnPosition.toString());
+        if (!property.isSold) {
+            clientEvent.dispatchEvent(Events.ShowBuyProperty, property);
+        } else {
+            if (player.balance > property.data.rent) {
+                player.balance -= property.data.rent;
+            } else {
+                // show player is broke and out
+                player.isOut = true;
+                // this.checkIfGameIsOver();
+            }
+        }
     };
+
+    private checkIfGameIsOver() {
+        let players_with_bal = this.players_arr.filter((ply, index) => {
+            return !ply.isOut;
+        });
+
+        if (players_with_bal.length > 2) {
+            // game over and other player wins
+        } else if (this.players_arr.length > 2) {
+
+        }
+    }
 
 
     private shuffleDice(array: number[]) {
@@ -136,7 +166,7 @@ export default class GameEngine implements GameEvents {
     registerEvents() {
         clientEvent.on(UIEvents.diceClick, this.onDiceClick, this);
         clientEvent.on(Events.turnOver, this.onTurnOver, this);
-        clientEvent.on(Events.onMoveEnd, this.onMoveEnd, this);
+        clientEvent.on(UIEvents.onMoveEnd, this.onMoveEnd, this);
     }
 
     private startWaitTimer(fncToCall: Function) {

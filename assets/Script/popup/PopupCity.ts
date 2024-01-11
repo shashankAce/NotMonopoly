@@ -1,12 +1,13 @@
 
-import { ICities, TileColors } from "../Config";
+import { IProperty } from "../Config";
 import { E_Popup } from "../controller/PopupController";
 import Popup from "../core/Popup";
+import PropertyPopup from "./PropertyPopup";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class PopupCity extends Popup {
+export default class PopupCity extends PropertyPopup {
 
     @property(cc.Node)
     backgroung_color: cc.Node = null;
@@ -33,7 +34,7 @@ export default class PopupCity extends Popup {
         this.node.opacity = 0;
     }
 
-    init(data: ICities) {
+    init(data: IProperty) {
         this.popup_type = E_Popup.city;
         this.rent.string = data.rent.toString();
         this.property_name.string = data.name;

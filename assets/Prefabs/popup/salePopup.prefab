@@ -2833,13 +2833,13 @@
       "__id__": 8
     },
     "_enabled": true,
+    "closeBtn": null,
     "property_name": {
       "__id__": 15
     },
     "mortgage_value": {
       "__id__": 25
     },
-    "closeBtn": null,
     "building_lvl": [
       {
         "__id__": 30
@@ -7458,13 +7458,13 @@
       "__id__": 132
     },
     "_enabled": true,
+    "closeBtn": null,
     "property_name": {
       "__id__": 139
     },
     "mortgage_value": {
       "__id__": 149
     },
-    "closeBtn": null,
     "building_lvl": [
       {
         "__id__": 154
@@ -11041,6 +11041,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "closeBtn": null,
     "bidPrefab": {
       "__uuid__": "400baa91-375b-41cc-a831-31e9724d7e77"
     },

@@ -1,4 +1,4 @@
-import { ICities, IConfig } from "../Config";
+import { IProperty } from "../Config";
 import Popup from "../core/Popup";
 import PopupCity from "../popup/PopupCity";
 import PopupSale from "../popup/PopupSale";
@@ -42,7 +42,7 @@ export default class PopupController extends cc.Component {
         this.transparent_layer.opacity = 0;
     }
 
-    showPopup(type: E_Popup) {
+    showSalePopup(data: IProperty) {
 
         let pre_popup = this.popupPool.pop();
         if (pre_popup)
@@ -52,12 +52,14 @@ export default class PopupController extends cc.Component {
         let node = cc.instantiate(prefab);
         this.node.addChild(node);
         //
-        let node_sale = node.getComponent(PopupSale)
-        node_sale.onSale({});
+        let node_sale = node.getComponent(PopupSale);
+        node_sale.onSale(data);
+        this.popupPool.push(node_sale);
+
         // node_sale.show(true);
     }
 
-    showCityPopup(data: ICities) {
+    showCityPopup(data: IProperty) {
 
         let pre_popup = this.popupPool.pop();
         if (pre_popup && pre_popup.popup_type !== E_Popup.city) {
@@ -85,7 +87,7 @@ export default class PopupController extends cc.Component {
         this.popupPool.push(popup_city);
     }
 
-    showStationPopup(data: ICities) {
+    showStationPopup(data: IProperty) {
         let pre_popup = this.popupPool.pop();
         if (pre_popup && pre_popup.popup_type !== E_Popup.station) {
             this.node.removeChild(pre_popup.node);

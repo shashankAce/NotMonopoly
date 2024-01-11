@@ -82,7 +82,7 @@ export default class LayoutController extends cc.Component {
         this.drawCities(jsonAsset.json);
         this.drawCorners(jsonAsset.json);
         this.drawStations(jsonAsset.json);
-        // this.drawIndex();
+        this.drawIndex();
     }
 
     protected createDice() {
@@ -181,12 +181,6 @@ export default class LayoutController extends cc.Component {
             this.propertyArr.push(city_node);
             this.propertyData.push(data);
         }
-    }
-
-    protected registerEvents() {
-        clientEvent.on(Events.ShowStationInfo, this.showStationInfo, this);
-        clientEvent.on(Events.ShowCityInfo, this.showCityInfo, this);
-        clientEvent.on(Events.HidePopup, this.hidePopup, this);
     }
 
     protected hidePopup() {

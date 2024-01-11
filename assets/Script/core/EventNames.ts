@@ -25,7 +25,6 @@ export const Events = {
 
     onSentToJail: "onSentToJail",
     onTakeLoan: "onTakeLoan",
-    onMoveEnd: "onMoveEnd",
     onChance: "onChance",
     onCourt: "onCourt",
     onGo: "onGo",
@@ -35,8 +34,5 @@ export const Events = {
 export const UIEvents = {
     spinDice: "spinDice",
     diceClick: "diceClick",
-}
-export const LocalEvents = {
-    spinDice: "spinDice",
-    diceClick: "diceClick",
+    onMoveEnd: "onMoveEnd"
 }

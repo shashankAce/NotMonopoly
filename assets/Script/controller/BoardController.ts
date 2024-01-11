@@ -12,6 +12,8 @@ import UserTab from "../entity/UserTab";
 import Socket from "../socket/Socket";
 import { E_Popup } from "./PopupController";
 import GPlayer from "../core/engine/GPlayer";
+import PopupSale from "../popup/PopupSale";
+import GProperty from "../core/engine/GProperty";
 const { ccclass } = cc._decorator;
 
 @ccclass
@@ -60,22 +62,19 @@ export default class BoardController extends LayoutController implements GameEve
         this.dice_array[this.currentTurn].setActive(true);
     }
 
-    private async onSpinDice(dice_values: number[]) {
+    private async onSpinDice() {
 
         let index = Math.floor(this.currentTurn / (this.player_array.length - 1));
-        await this.dice_array[index].spin(dice_values);
-        await this.player_array[index].pawn.moveTo(dice_values[0] + dice_values[1]);
+
+        let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
+        let diceArr = gPlayer.diceValue;
+        await this.dice_array[index].spin(diceArr);
+        await this.player_array[index].pawn.moveTo(diceArr[0] + diceArr[1]);
         this.arrangePawns();
-        clientEvent.dispatchEvent(Events.onMoveEnd);
+        clientEvent.dispatchEvent(UIEvents.onMoveEnd);
 
         // await this.buyProperty();
         // this.turnOver();
-    }
-
-    async buyProperty() {
-        return new Promise((resolve: Function) => {
-            this.popupController.showPopup(E_Popup.sale);
-        });
     }
 
     private arrangePawns() {
@@ -143,10 +142,24 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     protected registerEvents(): void {
-        super.registerEvents();
+
+        clientEvent.on(Events.ShowStationInfo, this.showStationInfo, this);
+        clientEvent.on(Events.ShowCityInfo, this.showCityInfo, this);
+        clientEvent.on(Events.HidePopup, this.hidePopup, this);
+
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
         clientEvent.on(UIEvents.spinDice, this.onSpinDice, this);
+        clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
+
+    }
+
+    private onShowBuyPropertyPopup(property: GProperty) {
+        // let salePopup = cc.instantiate(this.salePopup);
+        // let saleScript = salePopup.getComponent(PopupSale);
+        // saleScript.onSale(property);
+        // this.popupController.showPopup();
+        this.popupController.showSalePopup(property.data);
     }
 
     getDummyPlayers() {

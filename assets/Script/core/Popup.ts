@@ -7,17 +7,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Popup extends cc.Component {
 
-    @property(cc.Label)
-    property_name: cc.Label = null;
-
-    @property(cc.Label)
-    mortgage_value: cc.Label = null;
-
     @property(cc.Node)
     closeBtn: cc.Node = null;
-
-    @property(cc.Node)
-    building_lvl: cc.Node[] = [];
 
     popup_type: E_Popup = null;
 

@@ -83,14 +83,15 @@ export const tilePos = [
     { x: -338, y: -477 },
     { x: -450, y: -477 },
 ]
-// export enum E_TILE_TYPE {
-//     CITY = "CITY",
-//     STATION = "STATION",
-//     CORNER = "CORNER",
-//     UTIL = "UTIL",
-//     CHANCE = "CHANCE",
-//     CHEST = "CHEST",
-// }
+
+export enum E_PROPERTY_TYPE {
+    CITY = "CITY",
+    STATION = "STATION",
+    CORNER = "CORNER",
+    UTIL = "UTIL",
+    CHANCE = "CHANCE",
+    CHEST = "CHEST",
+}
 
 // export enum E_SPECIAL {
 //     TAX = "TAX",
