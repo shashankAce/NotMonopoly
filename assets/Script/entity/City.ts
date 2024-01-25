@@ -1,6 +1,6 @@
 import { IProperty } from "../Config";
 import { clientEvent } from "../core/ClientEvent";
-import { Events } from "../core/EventNames";
+import { Events, UIEvents } from "../core/EventNames";
 import Property from "../core/Property";
 
 const { ccclass, property } = cc._decorator;
@@ -14,7 +14,7 @@ export default class City extends Property {
     }
 
     onClick() {
-        clientEvent.dispatchEvent(Events.ShowCityInfo, this.data);
+        clientEvent.dispatchEvent(UIEvents.ShowCityInfo, this.data);
     }
 
 }

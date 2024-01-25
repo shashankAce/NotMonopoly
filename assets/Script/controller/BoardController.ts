@@ -22,7 +22,6 @@ export default class BoardController extends LayoutController implements GameEve
     onGo: Function;
     onRollDouble: Function;
     onUseCard: Function;
-    onBuyProperty: Function;
     onMortgageProperty: Function;
     onAuctionProperty: Function;
     onBid: Function;
@@ -50,9 +49,9 @@ export default class BoardController extends LayoutController implements GameEve
         this.registerEvents();
         this.createDice();
 
-        // this.gameEngine.init(this.player_array, this.propertyArr);
-
         let players = this.getDummyPlayers();
+        // TODO: remove getDummyPlayers fn later when real player work is done
+        // this.gameEngine.initialize(this.player_array, this.propertyArr);
         this.gameEngine.initialize(players, this.propertyData);
         this.gameEngine.startGame();
     }
@@ -60,6 +59,7 @@ export default class BoardController extends LayoutController implements GameEve
     onTurnChange(turnIndex: number) {
         this.currentTurn = turnIndex;
         this.dice_array[this.currentTurn].setActive(true);
+        // TODO: set clicking enabled for only active player
     }
 
     private async onSpinDice() {
@@ -142,24 +142,25 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     protected registerEvents(): void {
-
-        clientEvent.on(Events.ShowStationInfo, this.showStationInfo, this);
-        clientEvent.on(Events.ShowCityInfo, this.showCityInfo, this);
-        clientEvent.on(Events.HidePopup, this.hidePopup, this);
+        // Local Events
+        clientEvent.on(UIEvents.ShowStationInfo, this.showStationInfo, this);
+        clientEvent.on(UIEvents.ShowCityInfo, this.showCityInfo, this);
+        clientEvent.on(UIEvents.HidePopup, this.hidePopup, this);
+        // Local Events
 
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
-        clientEvent.on(UIEvents.spinDice, this.onSpinDice, this);
+        clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
-
+        clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
-        // let salePopup = cc.instantiate(this.salePopup);
-        // let saleScript = salePopup.getComponent(PopupSale);
-        // saleScript.onSale(property);
-        // this.popupController.showPopup();
         this.popupController.showSalePopup(property.data);
+    }
+
+    onBuyProperty() {
+        this.popupController.hidepopup();
     }
 
     getDummyPlayers() {

@@ -1,6 +1,6 @@
 import { E_Station_Logo, IProperty, config } from "../Config";
 import { clientEvent } from "../core/ClientEvent";
-import { Events } from "../core/EventNames";
+import { Events, UIEvents } from "../core/EventNames";
 import Property from "../core/Property";
 
 const { ccclass, property } = cc._decorator;
@@ -63,6 +63,6 @@ export default class Station extends Property {
     }
 
     onClick() {
-        clientEvent.dispatchEvent(Events.ShowStationInfo, this.data);
+        clientEvent.dispatchEvent(UIEvents.ShowStationInfo, this.data);
     }
 }

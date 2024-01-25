@@ -1,12 +1,9 @@
 export const Events = {
 
     onAddPlayers: "onAddPlayers",
-    
+    spinDice: "spinDice",
 
-    ShowStationInfo: "ShowStationInfo",
-    ShowCityInfo: "ShowCityInfo",
     ShowBuyProperty: "ShowBuyProperty",
-    HidePopup: "HidePopup",
 
     onRollDouble: "onRollDouble",
     onUseCard: "onUseCard",
@@ -32,7 +29,11 @@ export const Events = {
 }
 
 export const UIEvents = {
-    spinDice: "spinDice",
+    ShowStationInfo: "ShowStationInfo",
+    ShowCityInfo: "ShowCityInfo",
+    HidePopup: "HidePopup",
     diceClick: "diceClick",
-    onMoveEnd: "onMoveEnd"
+    onMoveEnd: "onMoveEnd",
+    onBuyClick: "onBuyClick",
+    onAuction: "onAuction",
 }

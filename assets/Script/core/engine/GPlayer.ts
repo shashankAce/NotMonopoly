@@ -43,6 +43,7 @@ export default class GPlayer {
         let tile_dist = distance_count + this.pawnPosition;
         if (tile_dist > this.tileCount) {
             this.pawnPosition = tile_dist - this.tileCount;
+            return;
         }
         this.pawnPosition = tile_dist;
     }
