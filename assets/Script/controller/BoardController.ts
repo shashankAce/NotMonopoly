@@ -57,17 +57,17 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onTurnChange(turnIndex: number) {
-        this.currentTurn = turnIndex;
-        this.dice_array[this.currentTurn].setActive(true);
+        if (!this.gameEngine.isBidActive) {
+            this.dice_array[this.getTurnIndex()].setActive(true);
+        }
         // TODO: set clicking enabled for only active player
     }
 
     private async onSpinDice() {
-
-        let index = Math.floor(this.currentTurn / (this.player_array.length - 1));
-
+        let index = Math.floor(this.getTurnIndex() / (this.player_array.length - 1));
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         let diceArr = gPlayer.diceValue;
+
         await this.dice_array[index].spin(diceArr);
         await this.player_array[index].pawn.moveTo(diceArr[0] + diceArr[1]);
         this.arrangePawns();
@@ -75,6 +75,13 @@ export default class BoardController extends LayoutController implements GameEve
 
         // await this.buyProperty();
         // this.turnOver();
+    }
+
+    private getActivePlayer() {
+        return this.gameEngine.players_arr[this.gameEngine.turnIndex];
+    }
+    private getTurnIndex() {
+        return this.gameEngine.turnIndex;
     }
 
     private arrangePawns() {
@@ -156,11 +163,17 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
-        this.popupController.showSalePopup(property.data);
+        let data = {
+            property: property.data,
+            boardController: this,
+        }
+        this.popupController.showSalePopup(data);
     }
 
     onBuyProperty() {
-        this.popupController.hidepopup();
+        let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
+        // this.player_array[this.getTurnIndex()].tab
+        // this.popupController.hidepopup();
     }
 
     getDummyPlayers() {

@@ -62,4 +62,9 @@ export default class Player {
         this.index = gplayer.index;
         this.color = PlayerColor[gplayer.index];
     }
+
+    setBalance(balance: number) {
+        // play balance deduct audio
+        this.tab.pBalance.string = balance.toString();
+    }
 }

@@ -54,7 +54,6 @@ export default class LayoutController extends cc.Component {
     popupController: PopupController = null;
 
     protected boardData: IConfig;
-    protected currentTurn = 0;
 
     protected player_array: Player[] = [];
     protected dice_array: Dice[] = [];

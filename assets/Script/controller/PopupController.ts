@@ -42,7 +42,7 @@ export default class PopupController extends cc.Component {
         this.transparent_layer.opacity = 0;
     }
 
-    showSalePopup(data: IProperty) {
+    showSalePopup(data) {
 
         let pre_popup = this.popupPool.pop();
         if (pre_popup)

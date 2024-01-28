@@ -14,6 +14,8 @@ export default class GameEngine implements GameEvents {
     private interval: number;
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
+    private currentBid = 0;
+    public isBidActive = false;
 
     private listCheckWin: ActionCheckWin[] = [];
 
@@ -116,11 +118,12 @@ export default class GameEngine implements GameEvents {
         this.changeTurn();
     };
 
-    onAuctionProperty() {
-
-
-
-        clientEvent.dispatchEvent(Events.onAuctionProperty);
+    onAuctionProperty(price: number) {
+        cc.log(price);
+        this.currentBid = price;
+        this.isBidActive = true;
+        this.changeTurn();
+        // clientEvent.dispatchEvent(Events.onAuctionProperty);
     };
 
     private checkIfGameIsOver() {
@@ -189,7 +192,7 @@ export default class GameEngine implements GameEvents {
         clientEvent.on(Events.turnOver, this.onTurnOver, this);
         clientEvent.on(UIEvents.onMoveEnd, this.onMoveEnd, this);
         clientEvent.on(UIEvents.onBuyClick, this.onBuyProperty, this);
-        clientEvent.on(UIEvents.onAuction, this.onAuctionProperty, this);
+        clientEvent.on(UIEvents.onUserBid, this.onAuctionProperty, this);
     }
 
     private startWaitTimer(fncToCall: Function) {
