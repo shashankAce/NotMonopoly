@@ -23,7 +23,6 @@ export default class BoardController extends LayoutController implements GameEve
     onRollDouble: Function;
     onUseCard: Function;
     onMortgageProperty: Function;
-    onAuctionProperty: Function;
     onBid: Function;
     onDealProperty: Function;
     onSellProperty: Function;
@@ -160,6 +159,8 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
+        clientEvent.on(Events.onAuctionProperty, this.onBuyProperty, this);
+        clientEvent.on(Events.onBidActive, this.onAuctionProperty, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
@@ -174,6 +175,14 @@ export default class BoardController extends LayoutController implements GameEve
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         // this.player_array[this.getTurnIndex()].tab
         // this.popupController.hidepopup();
+    }
+
+    onAuctionProperty(property: GProperty) {
+        let data = {
+            property: property.data,
+            boardController: this,
+        }
+        this.popupController.showSalePopup(data);
     }
 
     getDummyPlayers() {

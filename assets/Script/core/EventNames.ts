@@ -14,6 +14,7 @@ export const Events = {
     onAuctionProperty: "onAuctionProperty",
 
     onBid: "onBid",
+    onBidActive: "onBidActive",
     onDealProperty: "onDealProperty",
     onSellProperty: "onSellProperty",
     onRentPaid: "onRentPaid",

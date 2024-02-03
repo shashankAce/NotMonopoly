@@ -15,7 +15,15 @@ export default class GameEngine implements GameEvents {
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
     private currentBid = 0;
-    public isBidActive = false;
+
+    public _isBidActive = false;
+    public set isBidActive(v: boolean) {
+        this._isBidActive = v;
+        if (v) clientEvent.dispatchEvent(Events.onBidActive);
+    }
+    public get isBidActive(): boolean {
+        return this._isBidActive;
+    }
 
     private listCheckWin: ActionCheckWin[] = [];
 
@@ -123,7 +131,6 @@ export default class GameEngine implements GameEvents {
         this.currentBid = price;
         this.isBidActive = true;
         this.changeTurn();
-        // clientEvent.dispatchEvent(Events.onAuctionProperty);
     };
 
     private checkIfGameIsOver() {
