@@ -32,7 +32,7 @@ export const TileColors = {
 
 export interface IPlayerInfo {
     name: string;
-    id: number;
+    id: string;
     profileUrl: string;
     isBot: boolean;
 }

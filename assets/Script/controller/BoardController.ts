@@ -34,7 +34,7 @@ export default class BoardController extends LayoutController implements GameEve
     onMove: Function;
     onChance: Function;
     onCourt: Function;
-
+    myId: string;
     gameEngine: GameEngine
     socketController: Socket;
 
@@ -168,7 +168,7 @@ export default class BoardController extends LayoutController implements GameEve
             property: property.data,
             boardController: this,
         }
-        this.popupController.showSalePopup(data);
+        this.popupController.showSalePopup(data, false);
     }
 
     onBuyProperty() {
@@ -178,28 +178,32 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onAuctionProperty(property: GProperty) {
-        let data = {
-            property: property.data,
-            boardController: this,
+        let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
+        if (gPlayer.id != this.myId) {
+            let data = {
+                property: property.data,
+                boardController: this,
+            }
+            this.popupController.showSalePopup(data, true);
         }
-        this.popupController.showSalePopup(data);
     }
 
     getDummyPlayers() {
         let playerData = [
             {
                 name: "Anshu",
-                id: 0,
+                id: "siofho",
                 profileUrl: "www.google.com",
                 isBot: false
             },
             {
                 name: "Mini",
-                id: 0,
+                id: "asdfhj",
                 profileUrl: "www.google.com",
                 isBot: false
             }
         ];
+        this.myId = playerData[0].id;
         return playerData;
     }
 }

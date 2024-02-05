@@ -42,7 +42,7 @@ export default class PopupController extends cc.Component {
         this.transparent_layer.opacity = 0;
     }
 
-    showSalePopup(data) {
+    showSalePopup(data, isBidActive: boolean) {
 
         let pre_popup = this.popupPool.pop();
         if (pre_popup)
@@ -55,6 +55,10 @@ export default class PopupController extends cc.Component {
         let node_sale = node.getComponent(PopupSale);
         node_sale.onSale(data);
         this.popupPool.push(node_sale);
+
+        if (isBidActive) {
+            node_sale.onAuctionClick();
+        }
 
         // node_sale.show(true);
     }
