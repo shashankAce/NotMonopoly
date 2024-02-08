@@ -39,6 +39,15 @@ export default class GameEngine implements GameEvents {
         this.onTurnChange();
     }
     ///
+    private _bidTurnIndex: number = 0;
+    public get bidTurn(): number {
+        return this._bidTurnIndex;
+    }
+    private set bidTurn(v: number) {
+        this._bidTurnIndex = v;
+        this.onBidTurnChange();
+    }
+    ///
     constructor() {
         this.registerEvents();
         this.property_map = new Map<string, GProperty>();
@@ -126,11 +135,11 @@ export default class GameEngine implements GameEvents {
         this.changeTurn();
     };
 
-    onAuctionProperty(price: number) {
+    onAuctionProperty(price: number) { //UIEvents.onUserBid
         cc.log(price);
         this.currentBid = price;
         this.isBidActive = true;
-        this.changeTurn();
+        this.changeBidTurn();
     };
 
     private checkIfGameIsOver() {
@@ -182,6 +191,17 @@ export default class GameEngine implements GameEvents {
         }
     }
 
+    private changeBidTurn() {
+
+        // TODO: check if player is able to bid 
+        // apply blance check
+        if (this.bidTurn < this.bidTurn) {
+            ++this.bidTurn;
+        } else {
+            this.bidTurn = 0;
+        }
+    }
+
     async onPlayerMoved() {
         for (const iterator of this.listCheckWin) {
             await iterator.funcExecute();
@@ -218,7 +238,6 @@ export default class GameEngine implements GameEvents {
 
     onUseCard() {
         clientEvent.dispatchEvent(Events.onUseCard);
-
     };
 
     /// done
@@ -226,6 +245,10 @@ export default class GameEngine implements GameEvents {
         clientEvent.dispatchEvent(Events.onTurnChange, this.turnIndex);
     };
 
+    /// done
+    onBidTurnChange() {
+        clientEvent.dispatchEvent(Events.onBidTurnChange, this.bidTurn);
+    };
 
     onMortgageProperty() {
         clientEvent.dispatchEvent(Events.onMortgageProperty);

@@ -8,10 +8,10 @@ export const Events = {
     onRollDouble: "onRollDouble",
     onUseCard: "onUseCard",
     onTurnChange: "onTurnChange",
+    onBidTurnChange: "onBidTurnChange",
 
     onBuyProperty: "onBuyProperty",
     onMortgageProperty: "onMortgageProperty",
-    onAuctionProperty: "onAuctionProperty",
 
     onBid: "onBid",
     onBidActive: "onBidActive",

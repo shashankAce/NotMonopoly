@@ -62,6 +62,10 @@ export default class BoardController extends LayoutController implements GameEve
         // TODO: set clicking enabled for only active player
     }
 
+    onBidTurnChange(turnIndex: number) {
+        // TODO: display bid turn on bid popup
+    }
+
     private async onSpinDice() {
         let index = Math.floor(this.getTurnIndex() / (this.player_array.length - 1));
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
@@ -155,11 +159,11 @@ export default class BoardController extends LayoutController implements GameEve
         // Local Events
 
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
+        clientEvent.on(Events.onBidTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
         clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
-        clientEvent.on(Events.onAuctionProperty, this.onBuyProperty, this);
         clientEvent.on(Events.onBidActive, this.onAuctionProperty, this);
     }
 
