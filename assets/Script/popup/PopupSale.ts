@@ -167,12 +167,13 @@ export default class PopupSale extends Popup {
         clientEvent.dispatchEvent(UIEvents.onUserBid, this.sale_price);
     }
 
+    // resp from server
     onBidListener(user) {
 
     }
 
     onFold(){
-        clientEvent.dispatchEvent(UIEvents.onUserBid, this.sale_price);
+        clientEvent.dispatchEvent(UIEvents.onUserFold, this.sale_price);
     }
 
     onSliderUpdate(param: cc.Slider) {

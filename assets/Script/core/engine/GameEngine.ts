@@ -14,8 +14,9 @@ export default class GameEngine implements GameEvents {
     private interval: number;
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
-    private currentBid = 0;
 
+    private bidAmount = 0;
+    private bidPlayers: GPlayer[] = [];
     public _isBidActive = false;
     public set isBidActive(v: boolean) {
         this._isBidActive = v;
@@ -137,10 +138,16 @@ export default class GameEngine implements GameEvents {
 
     onAuctionProperty(price: number) { //UIEvents.onUserBid
         cc.log(price);
-        this.currentBid = price;
+        this.bidAmount = price;
         this.isBidActive = true;
         this.changeBidTurn();
+        this.onBid();
     };
+
+    onUserBid(price: number) {
+        this.bidAmount = price;
+        this.changeBidTurn();
+    }
 
     private checkIfGameIsOver() {
         let players_with_bal = this.players_arr.filter((ply, index) => {
@@ -192,13 +199,24 @@ export default class GameEngine implements GameEvents {
     }
 
     private changeBidTurn() {
-
-        // TODO: check if player is able to bid 
-        // apply blance check
-        if (this.bidTurn < this.bidTurn) {
+        if (this.bidTurn < this.maxTurn) {
             ++this.bidTurn;
         } else {
             this.bidTurn = 0;
+        }
+
+        this.bidPlayers = this.players_arr.filter((ply, index) => {
+            if (ply.balance < this.bidAmount) {
+                ply.isFold = true;
+                return false;
+            }
+            return true;
+        });
+
+
+        // it can go to infinite loop also
+        if (this.players_arr[this.bidTurn].balance < this.bidAmount) {
+            this.changeBidTurn();
         }
     }
 

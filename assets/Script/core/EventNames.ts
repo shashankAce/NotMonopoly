@@ -37,4 +37,5 @@ export const UIEvents = {
     onMoveEnd: "onMoveEnd",
     onBuyClick: "onBuyClick",
     onUserBid: "onUserBid",
+    onUserFold: "onUserFold",
 }

@@ -16,7 +16,9 @@ export default class GPlayer {
     public defaultPawnPosition = 29;
     public tileCount = 40;
 
+    // means this player is broke
     public isOut = false;
+    public isFold = false;
 
     public get data(): IPlayerInfo {
         return this._data;
