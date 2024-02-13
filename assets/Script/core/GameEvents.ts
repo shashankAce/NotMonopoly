@@ -6,7 +6,7 @@ export interface GameEvents {
 
     onBuyProperty: Function;
     onMortgageProperty: Function;
-    onAuctionProperty: Function;
+    onBidProperty: Function;
 
     onBid: Function;
     onDealProperty: Function;

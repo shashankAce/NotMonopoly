@@ -40,13 +40,12 @@ export default class GameEngine implements GameEvents {
         this.onTurnChange();
     }
     ///
-    private _bidTurnIndex: number = 0;
+    private _bidTurnIndex: number = -1;
     public get bidTurn(): number {
         return this._bidTurnIndex;
     }
     private set bidTurn(v: number) {
         this._bidTurnIndex = v;
-        this.onBidTurnChange();
     }
     ///
     constructor() {
@@ -136,18 +135,22 @@ export default class GameEngine implements GameEvents {
         this.changeTurn();
     };
 
-    onAuctionProperty(price: number) { //UIEvents.onUserBid
+    onBidProperty(price: number) { //UIEvents.onUserBid
         cc.log(price);
+
+        let player = this.getCurrentPlayer();
+        if (player.balance < price) {
+            throw new Error("Player balance is low He/She is cheating");
+        }
+
         this.bidAmount = price;
+        if (!this.isBidActive) {
+            this.bidTurn = this.turnIndex;
+        }
         this.isBidActive = true;
         this.changeBidTurn();
         this.onBid();
     };
-
-    onUserBid(price: number) {
-        this.bidAmount = price;
-        this.changeBidTurn();
-    }
 
     private checkIfGameIsOver() {
         let players_with_bal = this.players_arr.filter((ply, index) => {
@@ -212,12 +215,21 @@ export default class GameEngine implements GameEvents {
             }
             return true;
         });
-
-
+        if (this.bidPlayers.length == 1) {
+            // it must be the current player himself
+            // make current turn player win the bid automatically
+            // TODO: win the bid code write here
+        }
         // it can go to infinite loop also
         if (this.players_arr[this.bidTurn].balance < this.bidAmount) {
             this.changeBidTurn();
         }
+        this.onBidTurnChange();
+    }
+
+    private getCurrentPlayer() {
+        let player = this.players_arr[this.turnIndex];
+        return player;
     }
 
     async onPlayerMoved() {
@@ -237,7 +249,7 @@ export default class GameEngine implements GameEvents {
         clientEvent.on(Events.turnOver, this.onTurnOver, this);
         clientEvent.on(UIEvents.onMoveEnd, this.onMoveEnd, this);
         clientEvent.on(UIEvents.onBuyClick, this.onBuyProperty, this);
-        clientEvent.on(UIEvents.onUserBid, this.onAuctionProperty, this);
+        clientEvent.on(UIEvents.onUserBid, this.onBidProperty, this);
     }
 
     private startWaitTimer(fncToCall: Function) {

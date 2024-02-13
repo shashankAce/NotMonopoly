@@ -53,6 +53,7 @@ export default class GPlayer {
     init(data: IPlayerInfo) {
         this._data = data;
         this.name = data.name;
+        this.balance = data.balance;
         this.color = PlayerColor[this.index];
         this.pawnPosition = this.defaultPawnPosition;
     }

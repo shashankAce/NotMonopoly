@@ -157,14 +157,13 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(UIEvents.ShowCityInfo, this.showCityInfo, this);
         clientEvent.on(UIEvents.HidePopup, this.hidePopup, this);
         // Local Events
-
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onBidTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
         clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
-        clientEvent.on(Events.onBidActive, this.onAuctionProperty, this);
+        clientEvent.on(Events.onBidActive, this.onBidProperty, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
@@ -181,7 +180,7 @@ export default class BoardController extends LayoutController implements GameEve
         // this.popupController.hidepopup();
     }
 
-    onAuctionProperty(property: GProperty) {
+    onBidProperty(property: GProperty) {
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         if (gPlayer.id != this.myId) {
             let data = {
@@ -198,13 +197,22 @@ export default class BoardController extends LayoutController implements GameEve
                 name: "Anshu",
                 id: "siofho",
                 profileUrl: "www.google.com",
-                isBot: false
+                isBot: false,
+                balance: 1500
             },
             {
                 name: "Mini",
                 id: "asdfhj",
                 profileUrl: "www.google.com",
-                isBot: false
+                isBot: false,
+                balance: 800
+            },
+            {
+                name: "Ashley",
+                id: "0o9ytrd",
+                profileUrl: "www.google.com",
+                isBot: false,
+                balance: 500
             }
         ];
         this.myId = playerData[0].id;
