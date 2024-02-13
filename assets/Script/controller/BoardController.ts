@@ -158,7 +158,6 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(UIEvents.HidePopup, this.hidePopup, this);
         // Local Events
         clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
-        clientEvent.on(Events.onBidTurnChange, this.onTurnChange, this);
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
         clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
@@ -204,14 +203,14 @@ export default class BoardController extends LayoutController implements GameEve
                 name: "Mini",
                 id: "asdfhj",
                 profileUrl: "www.google.com",
-                isBot: false,
+                isBot: true,
                 balance: 800
             },
             {
                 name: "Ashley",
                 id: "0o9ytrd",
                 profileUrl: "www.google.com",
-                isBot: false,
+                isBot: true,
                 balance: 500
             }
         ];

@@ -61,6 +61,12 @@ export default class PopupSale extends Popup {
     @property(cc.Slider)
     priceRange: cc.Slider = null;
 
+    @property(cc.Button)
+    bidButton: cc.Button = null;
+
+    @property(cc.Button)
+    foldButton: cc.Button = null;
+
     private sale_price = 0;
     private available_bal = 0;
 
@@ -76,6 +82,7 @@ export default class PopupSale extends Popup {
             this.bidContentView.addChild(element);
         }
         clientEvent.on(Events.onBid, this.onBidListener);
+        clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
     }
 
     onBigListener(data) {
@@ -154,25 +161,34 @@ export default class PopupSale extends Popup {
     }
 
     onBidClick() {
-        this.priceRange.enabled = false;
-
-        let turnIndex = this.boardController.gameEngine.turnIndex;
-        let gPlayer = this.boardController.gameEngine.players_arr[turnIndex];
-        let name = this.getTrucName(gPlayer.name);
-
-        let bidNode = cc.instantiate(this.bidPrefab);
-        bidNode.children[0].getComponent(cc.Label).string = name + " " + this.sale_price;
-        this.bidContentView.addChild(bidNode);
-        this.bidContentView.getComponent(cc.Layout).updateLayout();
+        this.freezeBidLayout(true);
         clientEvent.dispatchEvent(UIEvents.onUserBid, this.sale_price);
     }
 
-    // resp from server
-    onBidListener(user) {
-
+    private onBidTurnChange() {
+        let biddingPlayer = this.getBiddingPlayer();
+        this.biderName.string = this.getTrucName(biddingPlayer.name) + ' bidding';
+        this.freezeBidLayout(true);
     }
 
-    onFold(){
+    private freezeBidLayout(forSure: boolean) {
+        this.bidButton.interactable = !forSure;
+        this.foldButton.interactable = !forSure;
+        this.priceRange.enabled = !forSure;
+    }
+
+    private onBidListener() {
+        // add a row in bid layout
+        let bidTurn = this.boardController.gameEngine.bidTurn;
+        let gPlayer = this.boardController.gameEngine.players_arr[bidTurn];
+        let name = this.getTrucName(gPlayer.name);
+        let bidNode = cc.instantiate(this.bidPrefab);
+        bidNode.children[0].getComponent(cc.Label).string = name + " " + config.currency + this.sale_price;
+        this.bidContentView.addChild(bidNode);
+        this.bidContentView.getComponent(cc.Layout).updateLayout();
+    }
+
+    onFold() {
         clientEvent.dispatchEvent(UIEvents.onUserFold, this.sale_price);
     }
 
@@ -183,13 +199,17 @@ export default class PopupSale extends Popup {
         this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
     }
 
+    private getBiddingPlayer() {
+        return this.boardController.gameEngine.players_arr[this.boardController.gameEngine.bidTurn];
+    }
+
     async hide() {
         this.isEasing = false;
         return super.hide();
     }
 
     getTrucName(name: string) {
-        let tmp = '';
+        let tmp = name;
         if (name.length > 10) {
             tmp = name.substring(0, 10);
             tmp += '..';
