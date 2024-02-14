@@ -81,7 +81,7 @@ export default class PopupSale extends Popup {
             const element = cc.instantiate(this.bidPrefab);
             this.bidContentView.addChild(element);
         }
-        clientEvent.on(Events.onBid, this.onBidListener);
+        clientEvent.on(Events.onBid, this.onBidListener, this);
         clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
     }
 
@@ -168,7 +168,16 @@ export default class PopupSale extends Popup {
     private onBidTurnChange() {
         let biddingPlayer = this.getBiddingPlayer();
         this.biderName.string = this.getTrucName(biddingPlayer.name) + ' bidding';
-        this.freezeBidLayout(true);
+
+        let gPlayer = this.getBiddingPlayer();
+        this.available_bal = gPlayer.balance;
+        this.priceRange.progress = (this.boardController.gameEngine.bidAmount + 1) / gPlayer.balance;
+
+        let value = this.available_bal * this.priceRange.progress;
+        this.sale_price = Math.floor(value);
+        this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
+        // TODO: add multiplayer or localmultiplayer or vs cpu check
+        this.freezeBidLayout(false);
     }
 
     private freezeBidLayout(forSure: boolean) {
@@ -193,7 +202,7 @@ export default class PopupSale extends Popup {
     }
 
     onSliderUpdate(param: cc.Slider) {
-        console.log(param.progress);
+        // cc.log(param.progress);
         let value = this.available_bal * param.progress;
         this.sale_price = Math.floor(value);
         this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();

@@ -14,9 +14,9 @@ export const TabPosition = [
 
 export const PlayerColor = [
     new cc.Color().fromHEX("#28bf0a"), // green
-    new cc.Color().fromHEX("#a61a05"), // red
-    new cc.Color().fromHEX("#a8770c"), // yellow
-    new cc.Color().fromHEX("#13209c"), // blue
+    new cc.Color().fromHEX("#ff6b6b"), // red
+    new cc.Color().fromHEX("#fbfa62"), // yellow
+    new cc.Color().fromHEX("#62bffb"), // blue
 ]
 
 export const TileColors = {

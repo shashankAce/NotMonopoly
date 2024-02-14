@@ -6157,6 +6157,12 @@
     "priceRange": {
       "__id__": 125
     },
+    "bidButton": {
+      "__id__": 146
+    },
+    "foldButton": {
+      "__id__": 158
+    },
     "_id": ""
   },
   {

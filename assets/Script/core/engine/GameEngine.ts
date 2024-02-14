@@ -15,7 +15,7 @@ export default class GameEngine implements GameEvents {
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
 
-    private bidAmount = 0;
+    public bidAmount = 0;
     private bidPlayers: GPlayer[] = [];
     public _isBidActive = false;
     public set isBidActive(v: boolean) {
@@ -148,8 +148,8 @@ export default class GameEngine implements GameEvents {
             this.bidTurn = this.turnIndex;
         }
         this.isBidActive = true;
-        this.changeBidTurn();
         this.onBid();
+        this.changeBidTurn();
     };
 
     private checkIfGameIsOver() {
@@ -209,7 +209,7 @@ export default class GameEngine implements GameEvents {
         }
 
         this.bidPlayers = this.players_arr.filter((ply, index) => {
-            if (ply.balance < this.bidAmount) {
+            if (ply.balance < (this.bidAmount + 1)) {
                 ply.isFold = true;
                 return false;
             }

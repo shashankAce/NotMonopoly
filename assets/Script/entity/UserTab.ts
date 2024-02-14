@@ -25,10 +25,22 @@ export default class UserTab extends cc.Component {
     @property(cc.Node)
     colorNode: cc.Node = null;
 
+    @property(cc.Node)
+    tint: cc.Node = null;
+
+    protected onLoad(): void {
+        this.tint.active = false;
+    }
+
     init(name: string, balance: number, player: Player) {
         this.pName.string = name;
         this.pBalance.string = balance.toString();
         this.pPawn.node.color = player.color;
         this.colorNode.color = player.color;
+        this.tint.active = false;
+    }
+
+    public deactivate(bool: boolean) {
+        this.tint.active = bool;
     }
 }

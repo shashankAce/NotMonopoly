@@ -63,7 +63,11 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onBidTurnChange(turnIndex: number) {
-        // TODO: display bid turn on bid popup
+        this.gameEngine.players_arr.forEach((player, index) => {
+            if (player.isFold == true) {
+                this.player_array[index].tab.deactivate(true);
+            }
+        })
     }
 
     private async onSpinDice() {
@@ -83,6 +87,7 @@ export default class BoardController extends LayoutController implements GameEve
     private getActivePlayer() {
         return this.gameEngine.players_arr[this.gameEngine.turnIndex];
     }
+
     private getTurnIndex() {
         return this.gameEngine.turnIndex;
     }
@@ -163,6 +168,8 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
         clientEvent.on(Events.onBidActive, this.onBidProperty, this);
+        clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
+
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
