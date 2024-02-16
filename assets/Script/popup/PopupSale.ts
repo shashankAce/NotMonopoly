@@ -1,5 +1,5 @@
 
-import { E_PROPERTY_TYPE, IProperty, config } from "../Config";
+import { E_PROPERTY_TYPE, GAME_MODE, IProperty, config } from "../Config";
 import BoardController from "../controller/BoardController";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
@@ -166,6 +166,7 @@ export default class PopupSale extends Popup {
     }
 
     private onBidTurnChange() {
+
         let biddingPlayer = this.getBiddingPlayer();
         this.biderName.string = this.getTrucName(biddingPlayer.name) + ' bidding';
 
@@ -176,8 +177,18 @@ export default class PopupSale extends Popup {
         let value = this.available_bal * this.priceRange.progress;
         this.sale_price = Math.floor(value);
         this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
-        // TODO: add multiplayer or localmultiplayer or vs cpu check
-        this.freezeBidLayout(false);
+
+        if (this.boardController.gameEngine.gameMode == GAME_MODE.ONLINE_MULTIPLAYER) {
+            this.freezeBidLayout(true);
+        } else if (this.boardController.gameEngine.gameMode == GAME_MODE.LOCAL_MULTIPLAYER) {
+            this.freezeBidLayout(false);
+        } else if (this.boardController.gameEngine.gameMode == GAME_MODE.SINGLE) {
+            this.freezeBidLayout(true);
+        }
+
+        if (biddingPlayer.id == this.boardController.myId) {
+            this.freezeBidLayout(false);
+        }
     }
 
     private freezeBidLayout(forSure: boolean) {

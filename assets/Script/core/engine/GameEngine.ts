@@ -1,4 +1,4 @@
-import { IProperty, IPlayerInfo, config } from "../../Config";
+import { IProperty, IPlayerInfo, config, GAME_MODE } from "../../Config";
 import { ActionCheckWin } from "../ActionCheckWin";
 import { clientEvent } from "../ClientEvent";
 import { UIEvents, Events } from "../EventNames";
@@ -14,7 +14,7 @@ export default class GameEngine implements GameEvents {
     private interval: number;
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
-
+    public gameMode: GAME_MODE;
     public bidAmount = 0;
     private bidPlayers: GPlayer[] = [];
     public _isBidActive = false;

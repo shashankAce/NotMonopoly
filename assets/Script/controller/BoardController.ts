@@ -1,6 +1,6 @@
 
 
-import { IPlayerInfo } from "../Config";
+import { GAME_MODE, IPlayerInfo } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
@@ -51,6 +51,8 @@ export default class BoardController extends LayoutController implements GameEve
         let players = this.getDummyPlayers();
         // TODO: remove getDummyPlayers fn later when real player work is done
         // this.gameEngine.initialize(this.player_array, this.propertyArr);
+        this.gameEngine.gameMode = GAME_MODE.LOCAL_MULTIPLAYER;
+        
         this.gameEngine.initialize(players, this.propertyData);
         this.gameEngine.startGame();
     }

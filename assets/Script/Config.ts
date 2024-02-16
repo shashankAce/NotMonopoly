@@ -85,6 +85,12 @@ export const tilePos = [
     { x: -450, y: -477 },
 ]
 
+export enum GAME_MODE {
+    ONLINE_MULTIPLAYER,
+    LOCAL_MULTIPLAYER,
+    SINGLE
+}
+
 export enum E_PROPERTY_TYPE {
     CITY = "CITY",
     STATION = "STATION",
