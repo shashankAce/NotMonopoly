@@ -51,9 +51,7 @@ export default class BoardController extends LayoutController implements GameEve
         let players = this.getDummyPlayers();
         // TODO: remove getDummyPlayers fn later when real player work is done
         // this.gameEngine.initialize(this.player_array, this.propertyArr);
-        this.gameEngine.gameMode = GAME_MODE.LOCAL_MULTIPLAYER;
-        
-        this.gameEngine.initialize(players, this.propertyData);
+        this.gameEngine.initialize(players, this.propertyData, GAME_MODE.LOCAL_MULTIPLAYER);
         this.gameEngine.startGame();
     }
 

@@ -14,9 +14,11 @@ export default class GameEngine implements GameEvents {
     private interval: number;
     private initial_bal: number = 1000;
     private maxTurn: number = 0;
+    private bidPlayers: GPlayer[] = [];
+
     public gameMode: GAME_MODE;
     public bidAmount = 0;
-    private bidPlayers: GPlayer[] = [];
+
     public _isBidActive = false;
     public set isBidActive(v: boolean) {
         this._isBidActive = v;
@@ -58,7 +60,8 @@ export default class GameEngine implements GameEvents {
         this.turnIndex = 0;
     }
 
-    initialize(players: IPlayerInfo[], propertyInfo: IProperty[]) {
+    initialize(players: IPlayerInfo[], propertyInfo: IProperty[], gameMode: GAME_MODE) {
+        this.gameMode = gameMode;
 
         // Creating property map 
         propertyInfo.forEach((value, index) => {
