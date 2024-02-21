@@ -202,10 +202,13 @@ export default class PopupSale extends Popup {
         let bidTurn = this.boardController.gameEngine.bidTurn;
         let gPlayer = this.boardController.gameEngine.players_arr[bidTurn];
         let name = this.getTrucName(gPlayer.name);
-        let bidNode = cc.instantiate(this.bidPrefab);
-        bidNode.children[0].getComponent(cc.Label).string = name + " " + config.currency + this.sale_price;
-        this.bidContentView.addChild(bidNode);
+
+        let bidRow = cc.instantiate(this.bidPrefab);
+        bidRow.children[0].getComponent(cc.Label).string = name + " " + config.currency + this.sale_price;
+        this.bidContentView.addChild(bidRow);
         this.bidContentView.getComponent(cc.Layout).updateLayout();
+
+        this.bidScrollView.scrollToBottom(0.2);
     }
 
     onFold() {

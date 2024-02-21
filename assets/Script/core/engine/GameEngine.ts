@@ -129,13 +129,17 @@ export default class GameEngine implements GameEvents {
     };
 
     onBuyProperty() {
-        let player = this.players_arr[this.turnIndex];
-        let property = this.property_map.get(player.pawnPosition.toString());
-        property.isSold = true;
-        property.soldTo = player;
-        player.balance -= property.data.price;
-        clientEvent.dispatchEvent(Events.onBuyProperty);
-        this.changeTurn();
+        if (this.isBidActive) {
+
+        } else {
+            let player = this.players_arr[this.turnIndex];
+            let property = this.property_map.get(player.pawnPosition.toString());
+            property.isSold = true;
+            property.soldTo = player;
+            player.balance -= property.data.price;
+            clientEvent.dispatchEvent(Events.onBuyProperty);
+            this.changeTurn();
+        }
     };
 
     onBidProperty(price: number) { //UIEvents.onUserBid
@@ -219,9 +223,7 @@ export default class GameEngine implements GameEvents {
             return true;
         });
         if (this.bidPlayers.length == 1) {
-            // it must be the current player himself
-            // make current turn player win the bid automatically
-            // TODO: win the bid code write here
+            this.onBuyProperty();
         }
         // it can go to infinite loop also
         if (this.players_arr[this.bidTurn].balance < this.bidAmount) {
