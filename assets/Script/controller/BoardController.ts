@@ -26,8 +26,6 @@ export default class BoardController extends LayoutController implements GameEve
     onBid: Function;
     onDealProperty: Function;
     onSellProperty: Function;
-    onRentPaid: Function;
-    onRendReceived: Function;
     onDiceSpin: Function;
     onSentToJail: Function;
     onTakeLoan: Function;
@@ -81,12 +79,11 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     private async onSpinDice() {
-        let index = Math.floor(this.getTurnIndex() / (this.player_array.length - 1));
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         let diceArr = gPlayer.diceValue;
 
-        await this.dice_array[index].spin(diceArr);
-        await this.player_array[index].pawn.moveTo(diceArr[0] + diceArr[1]);
+        await this.dice_array[this.gameEngine.turnIndex].spin(diceArr);
+        await this.player_array[this.gameEngine.turnIndex].pawn.moveTo(diceArr[0] + diceArr[1]);
         this.arrangePawns();
         clientEvent.dispatchEvent(UIEvents.onMoveEnd);
 
@@ -179,6 +176,7 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.onBidActive, this.onBidProperty, this);
         clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
+        clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
@@ -189,9 +187,19 @@ export default class BoardController extends LayoutController implements GameEve
         this.popupController.showSalePopup(data, false);
     }
 
-    onBuyProperty() {
+    async onBuyProperty() {
         let popup = this.popupController.getCurrentPopup() as PopupSale;
-        popup.onBuyPropertyListener();
+        await popup.onBuyPropertyListener().then(() => {
+            this.scheduleOnce(() => {
+                this.popupController.hidepopup();
+            }, 1);
+        });
+    }
+
+    onRentPaid() {
+        let player = this.getActivePlayer();
+        let property = this.gameEngine.property_map.get(player.pawnPosition.toString());
+        this.popupController.showRentPaidPopup(player, property.soldTo, property.rent);
     }
 
     onBidProperty(property: GProperty) {

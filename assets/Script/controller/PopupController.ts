@@ -1,6 +1,7 @@
 import { IProperty } from "../Config";
 import Popup from "../core/Popup";
 import PopupCity from "../popup/PopupCity";
+import PopupRent from "../popup/PopupRent";
 import PopupSale from "../popup/PopupSale";
 import PopupStation from "../popup/PopupStation";
 
@@ -120,6 +121,27 @@ export default class PopupController extends cc.Component {
 
         // Adding to pool
         this.popupPool.push(popup_station);
+    }
+
+    showRentPaidPopup(user1, user2, rent) {
+        let pre_popup = this.popupPool.pop();
+        if (pre_popup && pre_popup.popup_type !== E_Popup.station) {
+            this.node.removeChild(pre_popup.node);
+        }
+        //
+        let popup_rent: PopupRent;
+        let rent_popup = this.getPrefabObj(E_Popup.rent);
+        let node = cc.instantiate(rent_popup);
+        this.node.addChild(node);
+        //
+        popup_rent = node.getComponent(PopupRent)
+        popup_rent.init(user1, user2, rent);
+        popup_rent.show(true);
+        this.popupPool.push(popup_rent);
+
+        this.scheduleOnce(() => {
+            this.hidepopup();
+        }, 1);
     }
 
     async hidepopup() {

@@ -12,7 +12,6 @@ export interface GameEvents {
     onDealProperty: Function;
     onSellProperty: Function;
     onRentPaid: Function;
-    onRendReceived: Function;
     onDiceSpin: Function;
 
 

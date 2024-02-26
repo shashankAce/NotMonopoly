@@ -72,7 +72,7 @@ export default class GameEngine implements GameEvents {
         if (players.length > 1) {
             players.forEach((data, index) => {
                 let gPlayer = new GPlayer();
-                gPlayer.id = this.getRandId().toString();
+                gPlayer.playerId = this.getRandId().toString();
                 gPlayer.index = index;
                 gPlayer.balance = this.initial_bal;
                 gPlayer.init(data);
@@ -120,6 +120,8 @@ export default class GameEngine implements GameEvents {
         } else {
             if (player.balance > property.data.rent) {
                 player.balance -= property.data.rent;
+                this.onRentPaid();
+                this.changeTurn();
             } else {
                 // show player is broke and out
                 player.isOut = true;
@@ -134,7 +136,8 @@ export default class GameEngine implements GameEvents {
             let property = this.property_map.get(this.players_arr[this.turnIndex].pawnPosition.toString());
             property.isSold = true;
             property.soldTo = player;
-            player.balance -= property.data.price;
+            player.balance -= this.bidAmount;
+            this.isBidActive = false;
             clientEvent.dispatchEvent(Events.onBuyProperty);
             this.changeTurn();
         } else {
@@ -322,12 +325,8 @@ export default class GameEngine implements GameEvents {
         clientEvent.dispatchEvent(Events.onSellProperty);
 
     };
-    onRentPaid() {
+    onRentPaid() {// done
         clientEvent.dispatchEvent(Events.onRentPaid);
-
-    };
-    onRendReceived() {
-        clientEvent.dispatchEvent(Events.onRendReceived);
 
     };
     onDiceSpin() {

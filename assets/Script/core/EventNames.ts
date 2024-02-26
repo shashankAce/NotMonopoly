@@ -18,7 +18,6 @@ export const Events = {
     onDealProperty: "onDealProperty",
     onSellProperty: "onSellProperty",
     onRentPaid: "onRentPaid",
-    onRendReceived: "onRendReceived",
     onDiceSpin: "onDiceSpin",
 
     onSentToJail: "onSentToJail",

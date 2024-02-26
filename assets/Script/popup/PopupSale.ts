@@ -144,7 +144,7 @@ export default class PopupSale extends Popup {
         this.auction_node.active = false;
     }
 
-    onBuyPropertyListener() {
+    async onBuyPropertyListener() {
 
         this.setUIOnBuy();
 
@@ -159,8 +159,12 @@ export default class PopupSale extends Popup {
         this.buying_player_name.string = property.soldTo.name;
 
         // this.sale_price_label.string = 'For ' + config.currency + ' ' + amount.toString();
-        this.selling_price.node.parent.getComponent(cc.Animation).play('appear');
+        this.selling_price.node.parent.opacity = 0;
         this.selling_price.string = config.currency + ' ' + amount.toString();
+
+        this.scheduleOnce(() => {
+            this.selling_price.node.parent.getComponent(cc.Animation).play('price_appear');
+        }, 0.1);
 
         this.boardController.updatePlayersBalance();
     }

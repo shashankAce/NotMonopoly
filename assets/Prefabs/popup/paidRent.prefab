@@ -623,7 +623,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 46.72,
+      "width": 140.16,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -661,7 +661,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Sprite",
+    "__type__": "cc.Label",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -675,19 +675,22 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": null,
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_atlas": null,
+    "_string": ">>>>>>",
+    "_N$string": ">>>>>>",
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
+    "_N$horizontalAlign": 0,
+    "_N$verticalAlign": 0,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": ""
   },
   {
@@ -1583,9 +1586,7 @@
     "rent": {
       "__id__": 11
     },
-    "arrowImage": {
-      "__id__": 17
-    },
+    "arrowImage": null,
     "user1_label": {
       "__id__": 25
     },
