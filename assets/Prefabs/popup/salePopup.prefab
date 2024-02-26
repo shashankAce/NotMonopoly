@@ -288,7 +288,7 @@
         "__id__": 9
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 36
@@ -1684,7 +1684,7 @@
         "__id__": 51
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 64
@@ -1782,15 +1782,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -162.974,
-        -249.116,
+        -153,
+        -188,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        2,
+        2,
         1
       ]
     },
@@ -1809,7 +1809,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "label",
+    "_name": "bought_label",
     "_objFlags": 0,
     "_parent": {
       "__id__": 44
@@ -2021,8 +2021,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        155.876,
-        -273.453,
+        175.527,
+        -246.777,
         0,
         0,
         0,
@@ -2080,8 +2080,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110.14,
-      "height": 30
+      "width": 270,
+      "height": 35
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2119,7 +2119,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "label",
+    "_name": "playername",
     "_objFlags": 0,
     "_parent": {
       "__id__": 52
@@ -2144,8 +2144,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 90.14,
-      "height": 25.2
+      "width": 250,
+      "height": 35
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2196,11 +2196,11 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "PLAYER 1",
-    "_N$string": "PLAYER 1",
-    "_fontSize": 20,
-    "_lineHeight": 20,
-    "_enableWrapText": true,
+    "_string": "PLAYER 1 and 3",
+    "_N$string": "PLAYER 1 and 3",
+    "_fontSize": 30,
+    "_lineHeight": 30,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "62929b79-c0a5-4cc4-ab15-219308e82bb3"
     },
@@ -2212,7 +2212,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_N$overflow": 1,
     "_N$cacheMode": 0,
     "_id": ""
   },
@@ -2269,8 +2269,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 110.14,
-      "height": 30
+      "width": 270,
+      "height": 35
     },
     "_resize": 1,
     "_N$layoutType": 1,
@@ -2471,7 +2471,7 @@
         "__id__": 136
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 163
@@ -6141,6 +6141,12 @@
     },
     "bought_node": {
       "__id__": 43
+    },
+    "selling_price": {
+      "__id__": 46
+    },
+    "buying_player_name": {
+      "__id__": 54
     },
     "biderName": {
       "__id__": 70

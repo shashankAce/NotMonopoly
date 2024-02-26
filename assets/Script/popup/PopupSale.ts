@@ -47,6 +47,12 @@ export default class PopupSale extends Popup {
     bought_node: cc.Node = null;
 
     @property(cc.Label)
+    selling_price: cc.Label = null;
+
+    @property(cc.Label)
+    buying_player_name: cc.Label = null;
+
+    @property(cc.Label)
     biderName: cc.Label = null;
 
     @property(cc.Label)
@@ -89,18 +95,21 @@ export default class PopupSale extends Popup {
         cc.log(data);
     }
 
-    onSale(data) {
+    public setUIOnSale(data) {
 
         this.boardController = data.boardController;
         this.propertyData = data.property;
 
         this.sale_node.active = true;
         this.sale_buttons.active = true;
+        this.sale_price_label.node.parent.active = true;
         this.auction_node.active = false;
         this.bought_node.active = false;
         this.salePrefabNode.removeAllChildren();
 
         this.header.string = Locals.SALE;
+        this.sale_price_label.string = 'For ' + config.currency + ' ' + this.propertyData.price.toString();
+
 
         if (data.property.type == E_PROPERTY_TYPE.CITY) {
             this.propertyNode = cc.instantiate(this.cityPrefab);
@@ -118,24 +127,49 @@ export default class PopupSale extends Popup {
         }
     }
 
-    private onAuction() {
+    private setUIOnAuction() {
         this.sale_node.active = false;
+        this.sale_price_label.node.parent.active = true;
         this.auction_node.active = true;
         this.bought_node.active = false;
     }
 
-    private onBuy() {
+    private setUIOnBuy() {
         this.sale_node.active = true;
-        this.sale_buttons.active = false;
-        this.auction_node.active = true;
+        this.propertyNode.parent = this.salePrefabNode;
+        this.header.string = Locals.BOUGTH;
         this.bought_node.active = true;
+        this.sale_price_label.node.parent.active = false;
+        this.sale_buttons.active = false;
+        this.auction_node.active = false;
+    }
+
+    onBuyPropertyListener() {
+
+        this.setUIOnBuy();
+
+        let amount = this.propertyData.price;
+        if (this.boardController.gameEngine.isBidActive) {
+            amount = this.boardController.gameEngine.bidAmount;
+        }
+
+        let turnIndex = this.boardController.gameEngine.turnIndex;
+        let gPlayer = this.boardController.gameEngine.players_arr[turnIndex];
+        let property = this.boardController.gameEngine.property_map.get(gPlayer.pawnPosition.toString());
+        this.buying_player_name.string = property.soldTo.name;
+
+        // this.sale_price_label.string = 'For ' + config.currency + ' ' + amount.toString();
+        this.selling_price.node.parent.getComponent(cc.Animation).play('appear');
+        this.selling_price.string = config.currency + ' ' + amount.toString();
+
+        this.boardController.updatePlayersBalance();
     }
 
     onBuyClick() {
         if (this.isEasing)
             return;
         this.isEasing = true;
-        this.onBuy();
+        this.setUIOnBuy();
         clientEvent.dispatchEvent(UIEvents.onBuyClick);
     }
 
@@ -145,7 +179,7 @@ export default class PopupSale extends Popup {
         this.isEasing = true;
         this.auctionPrefabNode.removeAllChildren();
         this.propertyNode.parent = this.auctionPrefabNode;
-        this.onAuction();
+        this.setUIOnAuction();
 
         let turnIndex = this.boardController.gameEngine.turnIndex;
         let gPlayer = this.boardController.gameEngine.players_arr[turnIndex];
@@ -186,7 +220,7 @@ export default class PopupSale extends Popup {
             this.freezeBidLayout(true);
         }
 
-        if (biddingPlayer.id == this.boardController.myId) {
+        if (biddingPlayer.playerId == this.boardController.myId) {
             this.freezeBidLayout(false);
         }
     }

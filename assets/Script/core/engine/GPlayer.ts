@@ -2,7 +2,7 @@ import { IPlayerInfo, PlayerColor } from "../../Config";
 
 export default class GPlayer {
     private _name: string;
-    private _id: string;
+    private _playerId: string;
     public index: number;
     //
     public balance: number;
@@ -32,12 +32,12 @@ export default class GPlayer {
         this._name = v;
     }
 
-    public get id(): string {
-        return this._id;
+    public get playerId(): string {
+        return this._playerId;
     }
 
-    public set id(v: string) {
-        this._id = v;
+    public set playerId(v: string) {
+        this._playerId = v;
     }
 
     movePawn() {

@@ -130,7 +130,13 @@ export default class GameEngine implements GameEvents {
 
     onBuyProperty() {
         if (this.isBidActive) {
-
+            let player = this.bidPlayers[0];
+            let property = this.property_map.get(this.players_arr[this.turnIndex].pawnPosition.toString());
+            property.isSold = true;
+            property.soldTo = player;
+            player.balance -= property.data.price;
+            clientEvent.dispatchEvent(Events.onBuyProperty);
+            this.changeTurn();
         } else {
             let player = this.players_arr[this.turnIndex];
             let property = this.property_map.get(player.pawnPosition.toString());
@@ -209,27 +215,40 @@ export default class GameEngine implements GameEvents {
     }
 
     private changeBidTurn() {
+        this.bidPlayers = this.players_arr.filter((ply, index) => {
+            // if (ply.balance < (this.bidAmount + 1)) {
+            if (ply.balance < this.bidAmount) {
+                ply.isFold = true;
+                return false;
+            }
+            if (ply.isFold) {
+                return false;
+            }
+            return true;
+        });
+
+        if (this.bidPlayers.length == 1) {
+            this.onBuyProperty();
+            return;
+        }
+
         if (this.bidTurn < this.maxTurn) {
             ++this.bidTurn;
         } else {
             this.bidTurn = 0;
         }
 
-        this.bidPlayers = this.players_arr.filter((ply, index) => {
-            if (ply.balance < (this.bidAmount + 1)) {
-                ply.isFold = true;
-                return false;
-            }
-            return true;
-        });
-        if (this.bidPlayers.length == 1) {
-            this.onBuyProperty();
-        }
         // it can go to infinite loop also
         if (this.players_arr[this.bidTurn].balance < this.bidAmount) {
             this.changeBidTurn();
         }
         this.onBidTurnChange();
+    }
+
+    private onUserFold() {
+        let player = this.players_arr[this.bidTurn];
+        player.isFold = true;
+        this.changeBidTurn();
     }
 
     private getCurrentPlayer() {
@@ -255,6 +274,7 @@ export default class GameEngine implements GameEvents {
         clientEvent.on(UIEvents.onMoveEnd, this.onMoveEnd, this);
         clientEvent.on(UIEvents.onBuyClick, this.onBuyProperty, this);
         clientEvent.on(UIEvents.onUserBid, this.onBidProperty, this);
+        clientEvent.on(UIEvents.onUserFold, this.onUserFold, this);
     }
 
     private startWaitTimer(fncToCall: Function) {

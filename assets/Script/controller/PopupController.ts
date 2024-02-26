@@ -38,6 +38,10 @@ export default class PopupController extends cc.Component {
     private prefabMap: Map<E_Popup, cc.Prefab> = null;
     private popupPool: Popup[] = [];
 
+    public getCurrentPopup() {
+        return this.popupPool[0];
+    }
+
     protected onLoad(): void {
         this.transparent_layer.opacity = 0;
     }
@@ -53,7 +57,7 @@ export default class PopupController extends cc.Component {
         this.node.addChild(node);
         //
         let node_sale = node.getComponent(PopupSale);
-        node_sale.onSale(data);
+        node_sale.setUIOnSale(data);
         this.popupPool.push(node_sale);
 
         if (isBidActive) {

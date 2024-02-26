@@ -40,6 +40,10 @@ export default class UserTab extends cc.Component {
         this.tint.active = false;
     }
 
+    updateBalance(balance: number){
+        this.pBalance.string = balance.toString();
+    }
+
     public deactivate(bool: boolean) {
         this.tint.active = bool;
     }

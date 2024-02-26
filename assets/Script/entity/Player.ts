@@ -8,7 +8,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Player {
     private _name: string;
-    private _id: string;
+    private _playerId: string;
     private _tab: UserTab;
     private _pawn: Pawn;
     public index: number;
@@ -49,18 +49,19 @@ export default class Player {
         this._name = v;
     }
 
-    public get id(): string {
-        return this._id;
+    public get playerId(): string {
+        return this._playerId;
     }
 
-    public set id(v: string) {
-        this._id = v;
+    public set playerId(v: string) {
+        this._playerId = v;
     }
 
     init(gplayer: GPlayer) {
         this.data = gplayer.data;
         this.index = gplayer.index;
         this.color = PlayerColor[gplayer.index];
+        this.playerId = gplayer.playerId;
     }
 
     setBalance(balance: number) {

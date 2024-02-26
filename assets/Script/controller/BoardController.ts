@@ -60,6 +60,16 @@ export default class BoardController extends LayoutController implements GameEve
             this.dice_array[this.getTurnIndex()].setActive(true);
         }
         // TODO: set clicking enabled for only active player
+        this.updatePlayersBalance();
+    }
+
+    public updatePlayersBalance() {
+        let player_array = this.player_array;
+        this.gameEngine.players_arr.forEach((player, index) => {
+            if (player.playerId == player_array[index].playerId) {
+                player_array[index].tab.updateBalance(player.balance);
+            }
+        });
     }
 
     onBidTurnChange(turnIndex: number) {
@@ -166,10 +176,9 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
         clientEvent.on(Events.spinDice, this.onSpinDice, this);
         clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
-        clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
         clientEvent.on(Events.onBidActive, this.onBidProperty, this);
         clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
-
+        clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
@@ -181,14 +190,13 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onBuyProperty() {
-        let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
-        // this.player_array[this.getTurnIndex()].tab
-        // this.popupController.hidepopup();
+        let popup = this.popupController.getCurrentPopup() as PopupSale;
+        popup.onBuyPropertyListener();
     }
 
     onBidProperty(property: GProperty) {
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
-        if (gPlayer.id != this.myId) {
+        if (gPlayer.playerId != this.myId) {
             let data = {
                 property: property.data,
                 boardController: this,
