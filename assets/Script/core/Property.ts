@@ -37,7 +37,7 @@ export default class Property extends cc.Component {
 
     protected onLoad(): void {
         this.isSold = false;
-        this.userIcon.active = true;
+        // this.userIcon.active = true;
     }
 
     init(p_data: IProperty) {

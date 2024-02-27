@@ -267,4 +267,20 @@ export default class BoardController extends LayoutController implements GameEve
         this.myId = playerData[0].id;
         return playerData;
     }
+
+    onMenuClick() {
+
+    }
+    onBuildClick() {
+
+    }
+    onMortgageClick() {
+
+    }
+    onRedeemClick() {
+
+    }
+    onTradeClick() {
+
+    }
 }
