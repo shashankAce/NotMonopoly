@@ -1,6 +1,5 @@
-import { IProperty } from "../Config";
 import { clientEvent } from "../core/ClientEvent";
-import { Events, UIEvents } from "../core/EventNames";
+import { UIEvents } from "../core/EventNames";
 import Property from "../core/Property";
 
 const { ccclass, property } = cc._decorator;
@@ -9,6 +8,8 @@ const { ccclass, property } = cc._decorator;
 export default class City extends Property {
 
     onLoad() {
+        super.onLoad();
+
         this.pNameLabel.string = this.data.name;
         this.pPriceLabel.string = String(this.data.price);
     }

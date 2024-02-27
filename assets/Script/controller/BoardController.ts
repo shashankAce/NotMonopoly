@@ -207,6 +207,13 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     async onBuyProperty() {
+
+        // Updating UI
+        let player = this.getActivePlayer();
+        let property = this.property_map.get(player.pawnPosition.toString());
+        property.isSold = true;
+        // Updating UI
+
         let popup = this.popupController.getCurrentPopup() as PopupSale;
         await popup.onBuyPropertyListener().then(() => {
             this.scheduleOnce(() => {

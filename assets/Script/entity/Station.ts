@@ -32,6 +32,8 @@ export default class Station extends Property {
     private imageMap: Map<E_Station_Logo, cc.SpriteFrame> = null;
 
     onLoad() {
+        super.onLoad();
+
         this.pNameLabel.string = this.data.name;
         this.pPriceLabel.string = (config.currency + " ").concat(this.data.price.toString());
 
@@ -44,7 +46,13 @@ export default class Station extends Property {
         }
 
         if (this.data.type != "STATION") {
-            this.node.getChildByName("splash").getComponent(cc.Button).enabled = false;
+            this.node.getChildByName("tint").getComponent(cc.Button).enabled = false;
+        }
+    }
+
+    setSide(side: number) {
+        if (side == 1 || side == 2) {
+            this.c_image_sprite.node.setPosition(-50, 0);
         }
     }
 

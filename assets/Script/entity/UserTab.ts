@@ -40,11 +40,12 @@ export default class UserTab extends cc.Component {
         this.tint.active = false;
     }
 
-    updateBalance(balance: number){
+    updateBalance(balance: number) {
         this.pBalance.string = balance.toString();
     }
 
     public deactivate(bool: boolean) {
         this.tint.active = bool;
+        this.node.opacity = bool ? 100 : 255;
     }
 }

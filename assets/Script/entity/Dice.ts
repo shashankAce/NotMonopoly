@@ -43,11 +43,13 @@ export default class Dice extends cc.Component {
     public setActive(bool: boolean) {
         if (bool) {
             this.disable_node.active = false;
+            this.node.opacity = 255;
             this.isPressed = false;
             this.arrow_node.stopAllActions();
             this.glow(true);
         } else {
             this.disable_node.active = true;
+            this.node.opacity = 100;
             this.isPressed = true;
             this.glow(false);
         }

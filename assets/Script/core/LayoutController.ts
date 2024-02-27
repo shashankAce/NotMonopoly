@@ -57,8 +57,10 @@ export default class LayoutController extends cc.Component {
 
     protected player_array: Player[] = [];
     protected dice_array: Dice[] = [];
-    protected propertyArr: Property[] = [];
+    // protected propertyArr: Property[] = [];
     protected propertyData: IProperty[] = [];
+
+    public property_map: Map<string, Property>;
 
     start() {
 
@@ -71,6 +73,7 @@ export default class LayoutController extends cc.Component {
         //     this.createCities(jsonAsset.json);
         // });
 
+        this.property_map = new Map<string, Property>();
         cc.resources.load('cityConfig', (err, jsonAsset: cc.JsonAsset) => {
             this.createBoard(jsonAsset);
         });
@@ -81,7 +84,7 @@ export default class LayoutController extends cc.Component {
         this.drawCities(jsonAsset.json);
         this.drawCorners(jsonAsset.json);
         this.drawStations(jsonAsset.json);
-        this.drawIndex();
+        // this.drawPropertyIndex();
     }
 
     protected createDice() {
@@ -94,7 +97,7 @@ export default class LayoutController extends cc.Component {
         }
     }
 
-    protected drawIndex() {
+    protected drawPropertyIndex() {
         for (let index = 0; index < tilePos.length; index++) {
             let pos = new cc.Vec2(tilePos[index].x, tilePos[index].y);
 
@@ -111,7 +114,7 @@ export default class LayoutController extends cc.Component {
     protected drawCities(json: IConfig) {
 
         let sideTiles = 10;
-        let city_node: City;
+        let city_class: City;
         let data: IProperty;
         for (let index = 0; index < json.cities.length; index++) {
 
@@ -125,12 +128,13 @@ export default class LayoutController extends cc.Component {
                 rotation = 90;
             }
 
-            city_node = cc.instantiate(this.city).getComponent(City);
-            city_node.node.setPosition(new cc.Vec2(pos.x, pos.y));
-            city_node.node.angle = rotation;
-            city_node.init(data);
-            this.city_layer.addChild(city_node.node);
-            this.propertyArr.push(city_node);
+            city_class = cc.instantiate(this.city).getComponent(City);
+            city_class.node.setPosition(new cc.Vec2(pos.x, pos.y));
+            city_class.node.angle = rotation;
+            city_class.init(data);
+            this.city_layer.addChild(city_class.node);
+            ///
+            this.property_map.set(data.index.toString(), city_class);
             this.propertyData.push(data);
         }
     }
@@ -138,7 +142,7 @@ export default class LayoutController extends cc.Component {
     protected drawStations(json: IConfig) {
 
         let sideTiles = 10;
-        let city_node: Station;
+        let station_class: Station;
         let data: IProperty;
         for (let index = 0; index < json.station.length; index++) {
 
@@ -152,19 +156,21 @@ export default class LayoutController extends cc.Component {
                 rotation = 90;
             }
 
-            city_node = cc.instantiate(this.station).getComponent(Station);
-            city_node.node.setPosition(new cc.Vec2(pos.x, pos.y));
-            city_node.node.angle = rotation;
-            city_node.init(data);
-            this.city_layer.addChild(city_node.node);
-            this.propertyArr.push(city_node);
+            station_class = cc.instantiate(this.station).getComponent(Station);
+            station_class.node.setPosition(new cc.Vec2(pos.x, pos.y));
+            station_class.node.angle = rotation;
+            station_class.init(data);
+            station_class.setSide(side);
+            this.city_layer.addChild(station_class.node);
+            ///
+            this.property_map.set(data.index.toString(), station_class);
             this.propertyData.push(data);
         }
     }
 
     protected drawCorners(json: IConfig) {
 
-        let city_node: Corner;
+        let corner_class: Corner;
         let data: IProperty;
         for (let index = 0; index < json.corner.length; index++) {
 
@@ -172,12 +178,13 @@ export default class LayoutController extends cc.Component {
             let pos = new cc.Vec2(tilePos[data.index].x, tilePos[data.index].y);
             let rotation = 0;
 
-            city_node = cc.instantiate(this.corner).getComponent(Corner);
-            city_node.node.setPosition(new cc.Vec2(pos.x, pos.y));
-            city_node.node.angle = rotation;
-            city_node.init(data);
-            this.city_layer.addChild(city_node.node);
-            this.propertyArr.push(city_node);
+            corner_class = cc.instantiate(this.corner).getComponent(Corner);
+            corner_class.node.setPosition(new cc.Vec2(pos.x, pos.y));
+            corner_class.node.angle = rotation;
+            corner_class.init(data);
+            this.city_layer.addChild(corner_class.node);
+            ///
+            this.property_map.set(data.index.toString(), corner_class);
             this.propertyData.push(data);
         }
     }
