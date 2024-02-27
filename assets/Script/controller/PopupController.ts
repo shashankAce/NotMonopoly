@@ -64,8 +64,6 @@ export default class PopupController extends cc.Component {
         if (isBidActive) {
             node_sale.onAuctionClick();
         }
-
-        // node_sale.show(true);
     }
 
     showCityPopup(data: IProperty) {
@@ -136,10 +134,9 @@ export default class PopupController extends cc.Component {
         //
         popup_rent = node.getComponent(PopupRent)
         popup_rent.init(user1, user2, rent);
-        popup_rent.show(true);
         this.popupPool.push(popup_rent);
-
         this.scheduleOnce(() => {
+            cc.log("hide called");
             this.hidepopup();
         }, 1);
     }

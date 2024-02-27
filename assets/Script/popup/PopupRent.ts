@@ -33,5 +33,4 @@ export default class PopupRent extends Popup {
 
         this.rent.string = config.currency + " " + rent.toString();
     }
-
 }

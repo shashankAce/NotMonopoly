@@ -37,10 +37,13 @@
       },
       {
         "__id__": 43
+      },
+      {
+        "__id__": 44
       }
     ],
     "_prefab": {
-      "__id__": 44
+      "__id__": 45
     },
     "_opacity": 255,
     "_color": {
@@ -1580,19 +1583,41 @@
       "__id__": 1
     },
     "_enabled": true,
+    "closeBtn": null,
     "header": {
       "__id__": 4
     },
     "rent": {
       "__id__": 11
     },
-    "arrowImage": null,
     "user1_label": {
       "__id__": 25
     },
     "user2_label": {
       "__id__": 35
     },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "1ff1171f-c9cc-484e-a6d0-f577c5c29ebd"
+    },
+    "_clips": [
+      {
+        "__uuid__": "1ff1171f-c9cc-484e-a6d0-f577c5c29ebd"
+      },
+      {
+        "__uuid__": "5a3c0958-b3dd-4351-834f-a8f9b7b7f316"
+      }
+    ],
+    "playOnLoad": false,
     "_id": ""
   },
   {

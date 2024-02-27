@@ -28,6 +28,8 @@ export default class Dice extends cc.Component {
     @property(cc.Node)
     dice_arr: cc.Node[] = [];
 
+    private isPressed = false;
+
     protected onLoad(): void {
         let sf = this.diceSprite.clone();
         sf.setRect(cc.rect(tile_w * 5, 0, tile_w, tile_w));
@@ -41,10 +43,12 @@ export default class Dice extends cc.Component {
     public setActive(bool: boolean) {
         if (bool) {
             this.disable_node.active = false;
+            this.isPressed = false;
             this.arrow_node.stopAllActions();
             this.glow(true);
         } else {
             this.disable_node.active = true;
+            this.isPressed = true;
             this.glow(false);
         }
     }
@@ -66,7 +70,6 @@ export default class Dice extends cc.Component {
     public async spin(value: number[]) {
         return new Promise((resolve: Function) => {
             this.glow(false);
-
             cc.log('Spin value - ', value);
             let animation = this.getSpinAnimation(value[0], this.dice_arr[0]);
             let animation2 = this.getSpinAnimation(value[1], this.dice_arr[1]);
@@ -118,6 +121,10 @@ export default class Dice extends cc.Component {
     }
 
     onClick() {
+        if (this.isPressed)
+            return;
+        cc.log('Dice pressed on client');
+        this.isPressed = true;
         clientEvent.dispatchEvent(UIEvents.diceClick);
     }
 }

@@ -25,9 +25,9 @@ export default class PopupCity extends PropertyPopup {
         super.onLoad();
         this.reset();
 
-        this.scheduleOnce(() => {
-            // this.show();
-        }, 2)
+        // this.scheduleOnce(() => {
+        //     // this.show();
+        // }, 2)
     }
 
     private reset() {

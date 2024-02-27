@@ -1,6 +1,6 @@
 
 
-import { GAME_MODE, IPlayerInfo } from "../Config";
+import { GAME_MODE, IPlayerInfo, log } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
@@ -54,8 +54,18 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onTurnChange(turnIndex: number) {
+        log("On turn change");
         if (!this.gameEngine.isBidActive) {
-            this.dice_array[this.getTurnIndex()].setActive(true);
+            let turnIndex = this.getTurnIndex();
+            if (turnIndex == 0 || turnIndex == 3)
+                turnIndex = 0;
+            else {
+                turnIndex = 1;
+            }
+            this.dice_array[turnIndex].setActive(true);
+            this.player_array.forEach((player, index) => {
+                player.tab.deactivate(this.getTurnIndex() != index);
+            });
         }
         // TODO: set clicking enabled for only active player
         this.updatePlayersBalance();
@@ -71,18 +81,27 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onBidTurnChange(turnIndex: number) {
+        log("On bid turn change");
         this.gameEngine.players_arr.forEach((player, index) => {
             if (player.isFold == true) {
                 this.player_array[index].tab.deactivate(true);
             }
-        })
+        });
     }
 
     private async onSpinDice() {
+        log("On Spin Dice ");
+
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         let diceArr = gPlayer.diceValue;
 
-        await this.dice_array[this.gameEngine.turnIndex].spin(diceArr);
+        let diceIndex = this.getTurnIndex();
+        if (diceIndex == 0 || diceIndex == 3)
+            diceIndex = 0;
+        else {
+            diceIndex = 1;
+        }
+        await this.dice_array[diceIndex].spin(diceArr);
         await this.player_array[this.gameEngine.turnIndex].pawn.moveTo(diceArr[0] + diceArr[1]);
         this.arrangePawns();
         clientEvent.dispatchEvent(UIEvents.onMoveEnd);

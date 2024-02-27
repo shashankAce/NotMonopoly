@@ -120,6 +120,7 @@ export default class GameEngine implements GameEvents {
         } else {
             if (player.balance > property.data.rent) {
                 player.balance -= property.data.rent;
+                property.soldTo.balance += property.data.rent;
                 this.onRentPaid();
                 this.changeTurn();
             } else {

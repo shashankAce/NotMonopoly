@@ -148,6 +148,9 @@ export interface IProperty {
     logo: string;
     index: number;
 }
+export const log = function (args) {
+    cc.log(args, ': From server')
+}
 // export interface ICities {
 //     name: string;
 //     price: number;
