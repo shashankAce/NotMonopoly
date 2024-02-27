@@ -119,6 +119,7 @@ export default class PopupSale extends Popup {
             popup_city.show(false);
 
         } else if (data.property.type == E_PROPERTY_TYPE.STATION) {
+            cc.log("Inside station")
             this.propertyNode = cc.instantiate(this.stationPrefab);
             this.salePrefabNode.addChild(this.propertyNode);
             let popup_station = this.propertyNode.getComponent(PopupStation);
@@ -240,9 +241,17 @@ export default class PopupSale extends Popup {
         let bidTurn = this.boardController.gameEngine.bidTurn;
         let gPlayer = this.boardController.gameEngine.players_arr[bidTurn];
         let name = this.getTrucName(gPlayer.name);
+        cc.log("On Bid/Fold listener by : ", name);
+        cc.log("IsFold ? ->", gPlayer.isFold);
 
         let bidRow = cc.instantiate(this.bidPrefab);
-        bidRow.children[0].getComponent(cc.Label).string = name + " " + config.currency + this.sale_price;
+        let str = "";
+        if (gPlayer.isFold) {
+            str = name + " Folded";
+        } else {
+            str = name + " " + config.currency + this.sale_price;
+        }
+        bidRow.children[0].getComponent(cc.Label).string = str;
         this.bidContentView.addChild(bidRow);
         this.bidContentView.getComponent(cc.Layout).updateLayout();
 

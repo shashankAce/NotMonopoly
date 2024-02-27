@@ -43,7 +43,7 @@ export default class GPlayer {
     movePawn() {
         let distance_count = this.diceValue[0] + this.diceValue[1];
         let tile_dist = distance_count + this.pawnPosition;
-        if (tile_dist > this.tileCount) {
+        if (tile_dist >= this.tileCount) {
             this.pawnPosition = tile_dist - this.tileCount;
             return;
         }

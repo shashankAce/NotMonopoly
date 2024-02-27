@@ -1,4 +1,4 @@
-import { IProperty, IPlayerInfo, config, GAME_MODE } from "../../Config";
+import { IProperty, IPlayerInfo, config, GAME_MODE, log, E_PROPERTY_TYPE } from "../../Config";
 import { ActionCheckWin } from "../ActionCheckWin";
 import { clientEvent } from "../ClientEvent";
 import { UIEvents, Events } from "../EventNames";
@@ -92,10 +92,10 @@ export default class GameEngine implements GameEvents {
         let randInt2 = this.getRandomInt(diceArray.length);
         let suffledDiceArr = this.shuffleDice(diceArray);
 
-        let value: number[] = [6, 6];
-        // let value: number[] = [];
-        // value.push(suffledDiceArr[randInt1]);
-        // value.push(suffledDiceArr[randInt2]);
+        // let value: number[] = [6, 5];
+        let value: number[] = [];
+        value.push(suffledDiceArr[randInt1]);
+        value.push(suffledDiceArr[randInt2]);
         // // value.push(randInt1);
         // // value.push(randInt2);
 
@@ -109,27 +109,38 @@ export default class GameEngine implements GameEvents {
 
     onMoveEnd() {
         // Event from client when player moves
+        log('Player on move ended ')
         let player = this.players_arr[this.turnIndex];
         let property = this.property_map.get(player.pawnPosition.toString());
-        if (!property.isSold) {
-            if (player.balance > 0) {
-                clientEvent.dispatchEvent(Events.ShowBuyProperty, property);
+        if (property.data.type == E_PROPERTY_TYPE.CITY || property.data.type == E_PROPERTY_TYPE.STATION) {
+            if (!property.isSold) {
+                if (player.balance > 0) {
+                    clientEvent.dispatchEvent(Events.ShowBuyProperty, property);
+                } else {
+                    player.isOut = true;
+                }
             } else {
-                player.isOut = true;
+                if (player.balance > property.data.rent) {
+                    player.balance -= property.data.rent;
+                    property.soldTo.balance += property.data.rent;
+                    this.onRentPaid();
+                    this.changeTurn();
+                } else {
+                    // show player is broke and out
+                    player.isOut = true;
+                    // this.checkIfGameIsOver();
+                }
             }
         } else {
-            if (player.balance > property.data.rent) {
-                player.balance -= property.data.rent;
-                property.soldTo.balance += property.data.rent;
-                this.onRentPaid();
-                this.changeTurn();
-            } else {
-                // show player is broke and out
-                player.isOut = true;
-                // this.checkIfGameIsOver();
-            }
+            this.changeTurn();
         }
     };
+
+    private resetPlayerBidStatus() {
+        this.players_arr.forEach((gPlayer, index) => {
+            gPlayer.isFold = false;
+        })
+    }
 
     onBuyProperty() {
         if (this.isBidActive) {
@@ -138,8 +149,9 @@ export default class GameEngine implements GameEvents {
             property.isSold = true;
             property.soldTo = player;
             player.balance -= this.bidAmount;
-            this.isBidActive = false;
             clientEvent.dispatchEvent(Events.onBuyProperty);
+            this.resetPlayerBidStatus();
+            this.isBidActive = false;
             this.changeTurn();
         } else {
             let player = this.players_arr[this.turnIndex];
@@ -153,7 +165,7 @@ export default class GameEngine implements GameEvents {
     };
 
     onBidProperty(price: number) { //UIEvents.onUserBid
-        cc.log(price);
+        cc.log("On bid property ", price);
 
         let player = this.getCurrentPlayer();
         if (player.balance < price) {
@@ -252,6 +264,7 @@ export default class GameEngine implements GameEvents {
     private onUserFold() {
         let player = this.players_arr[this.bidTurn];
         player.isFold = true;
+        this.onBid();
         this.changeBidTurn();
     }
 
