@@ -27,8 +27,6 @@ export default class Corner extends Property {
     spritesFrames: CornerObj[] = [];
 
     onLoad() {
-        super.onLoad();
-
         this.pNameLabel.string = this.data.name;
         let ind = Object.keys(E_Corners).indexOf(this.data.name);
         this.c_image.spriteFrame = this.spritesFrames[ind].spriteFrame;

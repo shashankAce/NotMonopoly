@@ -46,11 +46,12 @@ export default class Station extends Property {
         }
 
         if (this.data.type != "STATION") {
-            this.node.getChildByName("tint").getComponent(cc.Button).enabled = false;
+            this.node.getChildByName("click").getComponent(cc.Button).enabled = false;
         }
     }
 
     setSide(side: number) {
+        super.setSide(side);
         if (side == 1 || side == 2) {
             this.c_image_sprite.node.setPosition(-50, 0);
         }

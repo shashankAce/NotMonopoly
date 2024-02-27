@@ -132,6 +132,7 @@ export default class LayoutController extends cc.Component {
             city_class.node.setPosition(new cc.Vec2(pos.x, pos.y));
             city_class.node.angle = rotation;
             city_class.init(data);
+            city_class.setSide(side);
             this.city_layer.addChild(city_class.node);
             ///
             this.property_map.set(data.index.toString(), city_class);
@@ -201,5 +202,9 @@ export default class LayoutController extends cc.Component {
     protected showCityInfo(data) {
         console.log(data);
         this.popupController.showCityPopup(data);
+    }
+
+    protected getLocalPlayerById(id: string) {
+        return this.player_array.find((player) => player.playerId == id);
     }
 }

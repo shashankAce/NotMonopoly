@@ -62,16 +62,16 @@ export const tilePos = [
     { x: 342, y: 477 },
     { x: 437, y: 477 },
     // right
-    { x: 450, y: 346 },
-    { x: 450, y: 262 },
-    { x: 450, y: 168 },
-    { x: 450, y: 84 },
-    { x: 450, y: 0 },
-    { x: 450, y: -88 },
-    { x: 450, y: -178 },
-    { x: 450, y: -262 },
-    { x: 450, y: -346 },
-    { x: 450, y: -450 },
+    { x: 477, y: 346 },
+    { x: 477, y: 262 },
+    { x: 477, y: 168 },
+    { x: 477, y: 84 },
+    { x: 477, y: 0 },
+    { x: 477, y: -88 },
+    { x: 477, y: -178 },
+    { x: 477, y: -262 },
+    { x: 477, y: -346 },
+    { x: 477, y: -450 },
     // bottom
     { x: 342, y: -477 },
     { x: 257, y: -477 },
@@ -147,9 +147,6 @@ export interface IProperty {
     //
     logo: string;
     index: number;
-}
-export const log = function (args) {
-    cc.log(args, ': From server')
 }
 // export interface ICities {
 //     name: string;

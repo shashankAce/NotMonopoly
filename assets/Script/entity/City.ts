@@ -9,7 +9,6 @@ export default class City extends Property {
 
     onLoad() {
         super.onLoad();
-
         this.pNameLabel.string = this.data.name;
         this.pPriceLabel.string = String(this.data.price);
     }

@@ -1,4 +1,4 @@
-import { IProperty, IPlayerInfo, config, GAME_MODE, log, E_PROPERTY_TYPE } from "../../Config";
+import { IProperty, IPlayerInfo, config, GAME_MODE, E_PROPERTY_TYPE } from "../../Config";
 import { ActionCheckWin } from "../ActionCheckWin";
 import { clientEvent } from "../ClientEvent";
 import { UIEvents, Events } from "../EventNames";
@@ -109,7 +109,7 @@ export default class GameEngine implements GameEvents {
 
     onMoveEnd() {
         // Event from client when player moves
-        log('Player on move ended ')
+        cc.log('Player on move ended ', ': From server')
         let player = this.players_arr[this.turnIndex];
         let property = this.property_map.get(player.pawnPosition.toString());
         if (property.data.type == E_PROPERTY_TYPE.CITY || property.data.type == E_PROPERTY_TYPE.STATION) {
@@ -165,9 +165,9 @@ export default class GameEngine implements GameEvents {
     };
 
     onBidProperty(price: number) { //UIEvents.onUserBid
-        cc.log("On bid property ", price);
+        let player = this.isBidActive ? this.getCurrentBiddingPlayer() : this.getCurrentPlayer();
+        cc.log("On bid property by: ", player.name, " at ", price);
 
-        let player = this.getCurrentPlayer();
         if (player.balance < price) {
             throw new Error("Player balance is low He/She is cheating");
         }
@@ -270,6 +270,10 @@ export default class GameEngine implements GameEvents {
 
     private getCurrentPlayer() {
         let player = this.players_arr[this.turnIndex];
+        return player;
+    }
+    private getCurrentBiddingPlayer() {
+        let player = this.players_arr[this.bidTurn];
         return player;
     }
 

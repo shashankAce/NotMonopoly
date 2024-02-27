@@ -275,6 +275,8 @@ export default class PopupSale extends Popup {
 
     async hide() {
         this.isEasing = false;
+        clientEvent.off(Events.onBid, this.onBidListener, this);
+        clientEvent.off(Events.onBidTurnChange, this.onBidTurnChange, this);
         return super.hide();
     }
 

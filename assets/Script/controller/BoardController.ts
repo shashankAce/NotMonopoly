@@ -1,6 +1,6 @@
 
 
-import { GAME_MODE, IPlayerInfo, log } from "../Config";
+import { GAME_MODE } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
@@ -10,7 +10,6 @@ import LayoutController from "../core/LayoutController";
 import Player from "../entity/Player";
 import UserTab from "../entity/UserTab";
 import Socket from "../socket/Socket";
-import { E_Popup } from "./PopupController";
 import GPlayer from "../core/engine/GPlayer";
 import PopupSale from "../popup/PopupSale";
 import GProperty from "../core/engine/GProperty";
@@ -33,7 +32,7 @@ export default class BoardController extends LayoutController implements GameEve
     onChance: Function;
     onCourt: Function;
     myId: string;
-    gameEngine: GameEngine
+    gameEngine: GameEngine;
     socketController: Socket;
 
     protected onLoad(): void {
@@ -54,7 +53,7 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onTurnChange(turnIndex: number) {
-        log("On turn change");
+        cc.log("On turn change", ': From server');
         if (!this.gameEngine.isBidActive) {
             let turnIndex = this.getTurnIndex();
             if (turnIndex == 0 || turnIndex == 3)
@@ -81,7 +80,7 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onBidTurnChange(turnIndex: number) {
-        log("On bid turn change");
+        cc.log("On bid turn change", ': From server');
         this.gameEngine.players_arr.forEach((player, index) => {
             if (player.isFold == true) {
                 this.player_array[index].tab.deactivate(true);
@@ -90,7 +89,7 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     private async onSpinDice() {
-        log("On Spin Dice ");
+        cc.log("On Spin Dice ", ': From server');
 
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         let diceArr = gPlayer.diceValue;
@@ -211,6 +210,8 @@ export default class BoardController extends LayoutController implements GameEve
         // Updating UI
         let player = this.getActivePlayer();
         let property = this.property_map.get(player.pawnPosition.toString());
+        let gProperty = this.gameEngine.property_map.get(player.pawnPosition.toString());
+        property.soldTo = this.getLocalPlayerById(gProperty.soldTo.playerId);
         property.isSold = true;
         // Updating UI
 
