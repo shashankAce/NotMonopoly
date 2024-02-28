@@ -100,6 +100,17 @@ export enum E_PROPERTY_TYPE {
     CHEST = "CHEST",
 }
 
+export const PROPERTY_COUNT = {
+    "one": 3,
+    "two": 2,
+    "three": 2,
+    "four": 3,
+    "five": 3,
+    "six": 3,
+    "seven": 3,
+    "eight": 3,
+}
+
 // export enum E_SPECIAL {
 //     TAX = "TAX",
 //     SPIN = "SPIN",
@@ -147,6 +158,7 @@ export interface IProperty {
     //
     logo: string;
     index: number;
+    group: string;
 }
 // export interface ICities {
 //     name: string;

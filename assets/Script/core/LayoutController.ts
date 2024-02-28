@@ -50,6 +50,9 @@ export default class LayoutController extends cc.Component {
     @property(cc.Node)
     city_layer: cc.Node = null;
 
+    @property(cc.Node)
+    menuPopup: cc.Node = null
+
     @property(PopupController)
     popupController: PopupController = null;
 
@@ -72,6 +75,8 @@ export default class LayoutController extends cc.Component {
         //     this.boardData = jsonAsset.json;
         //     this.createCities(jsonAsset.json);
         // });
+
+        this.menuPopup.active = false;
 
         this.property_map = new Map<string, Property>();
         cc.resources.load('cityConfig', (err, jsonAsset: cc.JsonAsset) => {

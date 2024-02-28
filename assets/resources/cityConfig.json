@@ -13,7 +13,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 0
+            "index": 0,
+            "group": "one"
         },
         {
             "name": "PATNA",
@@ -28,7 +29,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 1
+            "index": 1,
+            "group": "one"
         },
         {
             "name": "NAGPUR",
@@ -43,7 +45,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 3
+            "index": 3,
+            "group": "one"
         },
         {
             "name": "DELHI",
@@ -51,7 +54,8 @@
             "rent": 150,
             "build": 100,
             "type": "CITY",
-            "index": 6
+            "index": 6,
+            "group": "two"
         },
         {
             "name": "MUMBAI",
@@ -66,7 +70,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 8
+            "index": 8,
+            "group": "two"
         },
         {
             "name": "INDORE",
@@ -81,7 +86,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 10
+            "index": 10,
+            "group": "three"
         },
         {
             "name": "LUCKNOW",
@@ -96,7 +102,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 12
+            "index": 12,
+            "group": "three"
         },
         {
             "name": "GURUGRAM",
@@ -111,7 +118,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 15
+            "index": 15,
+            "group": "four"
         },
         {
             "name": "MATHURA",
@@ -126,7 +134,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 17
+            "index": 17,
+            "group": "four"
         },
         {
             "name": "CHANDIGRAH",
@@ -141,7 +150,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 18
+            "index": 18,
+            "group": "four"
         },
         {
             "name": "AGRA",
@@ -156,7 +166,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 20
+            "index": 20,
+            "group": "five"
         },
         {
             "name": "HYDERABAD",
@@ -171,7 +182,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 22
+            "index": 22,
+            "group": "five"
         },
         {
             "name": "KOLKATA",
@@ -186,7 +198,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 23
+            "index": 23,
+            "group": "five"
         },
         {
             "name": "CHENNAI",
@@ -201,7 +214,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 25
+            "index": 25,
+            "group": "six"
         },
         {
             "name": "BENGALURU",
@@ -216,10 +230,11 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 27
+            "index": 27,
+            "group": "six"
         },
         {
-            "name": "HYDERABAD",
+            "name": "KOCHI",
             "price": 140,
             "rent": 16,
             "house": [
@@ -231,7 +246,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 28
+            "index": 28,
+            "group": "six"
         },
         {
             "name": "GUWAHATI",
@@ -246,7 +262,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 30
+            "index": 30,
+            "group": "seven"
         },
         {
             "name": "PANJI",
@@ -261,7 +278,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 32
+            "index": 32,
+            "group": "seven"
         },
         {
             "name": "Shimla",
@@ -276,7 +294,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 33
+            "index": 33,
+            "group": "seven"
         },
         {
             "name": "JAIPUR",
@@ -291,7 +310,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 35
+            "index": 35,
+            "group": "eight"
         },
         {
             "name": "BHOPAL",
@@ -306,7 +326,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 36
+            "index": 36,
+            "group": "eight"
         },
         {
             "name": "PUNE",
@@ -321,7 +342,8 @@
             ],
             "build": 100,
             "type": "CITY",
-            "index": 38
+            "index": 38,
+            "group": "eight"
         }
     ],
     "station": [

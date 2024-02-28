@@ -112,6 +112,8 @@ export default class PopupSale extends Popup {
 
 
         if (data.property.type == E_PROPERTY_TYPE.CITY) {
+            cc.log("City sale popup shown");
+
             this.propertyNode = cc.instantiate(this.cityPrefab);
             this.salePrefabNode.addChild(this.propertyNode);
             let popup_city = this.propertyNode.getComponent(PopupCity);
@@ -119,7 +121,8 @@ export default class PopupSale extends Popup {
             popup_city.show(false);
 
         } else if (data.property.type == E_PROPERTY_TYPE.STATION) {
-            cc.log("Inside station")
+            cc.log("Station sale popup shown");
+
             this.propertyNode = cc.instantiate(this.stationPrefab);
             this.salePrefabNode.addChild(this.propertyNode);
             let popup_station = this.propertyNode.getComponent(PopupStation);
@@ -207,6 +210,7 @@ export default class PopupSale extends Popup {
     private onBidTurnChange() {
 
         let biddingPlayer = this.getBiddingPlayer();
+        cc.log("Bid turn changed to ", biddingPlayer.name);
         this.biderName.string = this.getTrucName(biddingPlayer.name) + ' bidding';
 
         let gPlayer = this.getBiddingPlayer();

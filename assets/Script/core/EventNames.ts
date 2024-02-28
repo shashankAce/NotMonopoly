@@ -8,6 +8,7 @@ export const Events = {
     onRollDouble: "onRollDouble",
     onUseCard: "onUseCard",
     onTurnChange: "onTurnChange",
+    onPlayAgain: "onPlayAgain",
     onBidTurnChange: "onBidTurnChange",
 
     onBuyProperty: "onBuyProperty",
@@ -25,7 +26,8 @@ export const Events = {
     onChance: "onChance",
     onCourt: "onCourt",
     onGo: "onGo",
-    turnOver: "turnOver"
+    turnOver: "turnOver",
+    onBuild: "onBuild"
 }
 
 export const UIEvents = {
@@ -37,4 +39,5 @@ export const UIEvents = {
     onBuyClick: "onBuyClick",
     onUserBid: "onUserBid",
     onUserFold: "onUserFold",
+    onUserBuild: "onUserBuild",
 }

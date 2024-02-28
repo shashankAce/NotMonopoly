@@ -209,6 +209,8 @@ export default class BoardController extends LayoutController implements GameEve
 
         // Updating UI
         let player = this.getActivePlayer();
+        cc.log("On buy property by -> ", player.name);
+
         let property = this.property_map.get(player.pawnPosition.toString());
         let gProperty = this.gameEngine.property_map.get(player.pawnPosition.toString());
         property.soldTo = this.getLocalPlayerById(gProperty.soldTo.playerId);
@@ -227,10 +229,13 @@ export default class BoardController extends LayoutController implements GameEve
         let player = this.getActivePlayer();
         let property = this.gameEngine.property_map.get(player.pawnPosition.toString());
         this.popupController.showRentPaidPopup(player, property.soldTo, property.rent);
+        cc.log("On paid rent", player.name, " -> ", property.soldTo.name, property.rent);
     }
 
     onBidProperty(property: GProperty) {
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
+        cc.log("On bid property by ", gPlayer.name);
+
         if (gPlayer.playerId != this.myId) {
             let data = {
                 property: property.data,
@@ -268,12 +273,27 @@ export default class BoardController extends LayoutController implements GameEve
         return playerData;
     }
 
-    onMenuClick() {
-
+    onMenuClick(show, event) {
+        let active = event == '1';
+        this.menuPopup.active = active;
+        this.menuPopup.opacity = active ? 255 : 0;
     }
+
     onBuildClick() {
+        let pCount = {};
+        let player = this.getActivePlayer();
+        this.property_map.forEach((property, index) => {
+            if (property.isSold && property.soldTo.playerId == player.playerId) {
+                if (!pCount[property.data.group]) {
+                    pCount[property.data.group] = [];
+                }
+                pCount[property.data.group].push(property);
+            }
+        });
 
+        clientEvent.dispatchEvent(UIEvents.onUserBuild);
     }
+
     onMortgageClick() {
 
     }

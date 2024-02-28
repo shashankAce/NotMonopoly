@@ -223,6 +223,14 @@ export default class GameEngine implements GameEvents {
     }
 
     private changeTurn() {
+        
+        let player = this.players_arr[this.turnIndex];
+        let isDouble = player.diceValue[0] == player.diceValue[1];
+        if (isDouble) {
+            this.turnIndex = this.turnIndex;
+            return;
+        }
+
         if (this.turnIndex < this.maxTurn) {
             ++this.turnIndex;
         } else {
