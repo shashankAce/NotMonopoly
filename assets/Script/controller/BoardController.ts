@@ -1,6 +1,6 @@
 
 
-import { GAME_MODE } from "../Config";
+import { GAME_MODE, PROPERTY_COUNT } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
@@ -90,6 +90,7 @@ export default class BoardController extends LayoutController implements GameEve
 
     private async onSpinDice() {
         cc.log("On Spin Dice ", ': From server');
+        this.gameEngine.diceCheatValue = [];
 
         let gPlayer = this.gameEngine.players_arr[this.gameEngine.turnIndex];
         let diceArr = gPlayer.diceValue;
@@ -273,10 +274,12 @@ export default class BoardController extends LayoutController implements GameEve
         return playerData;
     }
 
-    onMenuClick(show, event) {
-        let active = event == '1';
-        this.menuPopup.active = active;
-        this.menuPopup.opacity = active ? 255 : 0;
+    onMenuClick() {
+        this.popupController.showMenuPopup("1");
+    }
+
+    onCheatSubmit() {
+        this.gameEngine.diceCheatValue = this.cheatController.getValue();
     }
 
     onBuildClick() {
@@ -290,6 +293,21 @@ export default class BoardController extends LayoutController implements GameEve
                 pCount[property.data.group].push(property);
             }
         });
+
+        let eligible_prop_group = null;
+
+        let keys = Object.keys(pCount);
+        keys.forEach((key, index) => {
+            if (pCount[key].length == PROPERTY_COUNT[key]) {
+                eligible_prop_group = key;
+            }
+        });
+
+        if (eligible_prop_group) {
+            // highlight the properties eligible
+        } else {
+            this.popupController.showBuildError("1");
+        }
 
         clientEvent.dispatchEvent(UIEvents.onUserBuild);
     }

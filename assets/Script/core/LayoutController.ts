@@ -1,4 +1,5 @@
 
+import CheatController from "../CheatController";
 import { IConfig, IProperty, tilePos } from "../Config";
 import PopupController from "../controller/PopupController";
 import { clientEvent } from "../core/ClientEvent";
@@ -51,10 +52,13 @@ export default class LayoutController extends cc.Component {
     city_layer: cc.Node = null;
 
     @property(cc.Node)
-    menuPopup: cc.Node = null
+    highlight_layer: cc.Node = null;
 
     @property(PopupController)
     popupController: PopupController = null;
+
+    @property(CheatController)
+    cheatController: CheatController = null;
 
     protected boardData: IConfig;
 
@@ -75,8 +79,6 @@ export default class LayoutController extends cc.Component {
         //     this.boardData = jsonAsset.json;
         //     this.createCities(jsonAsset.json);
         // });
-
-        this.menuPopup.active = false;
 
         this.property_map = new Map<string, Property>();
         cc.resources.load('cityConfig', (err, jsonAsset: cc.JsonAsset) => {

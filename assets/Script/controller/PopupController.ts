@@ -30,6 +30,12 @@ class PopupObj {
 @ccclass
 export default class PopupController extends cc.Component {
 
+    @property(cc.Node)
+    build_error: cc.Node = null;
+
+    @property(cc.Node)
+    menuPopup: cc.Node = null
+
     @property(PopupObj)
     popupPrefabs: PopupObj[] = [];
 
@@ -45,6 +51,19 @@ export default class PopupController extends cc.Component {
 
     protected onLoad(): void {
         this.transparent_layer.opacity = 0;
+        this.build_error.active = false;
+        this.menuPopup.active = false;
+    }
+
+    showMenuPopup(show) {
+        let active = show == '1';
+        this.menuPopup.active = active;
+        this.menuPopup.opacity = active ? 255 : 0;
+    }
+
+    showBuildError(show) {
+        let active = show == "1";
+        this.build_error.active = active;
     }
 
     showSalePopup(data, isBidActive: boolean) {

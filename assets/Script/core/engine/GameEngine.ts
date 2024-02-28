@@ -16,6 +16,7 @@ export default class GameEngine implements GameEvents {
     private maxTurn: number = 0;
     private bidPlayers: GPlayer[] = [];
 
+    public diceCheatValue = [];
     public gameMode: GAME_MODE;
     public bidAmount = 0;
 
@@ -87,18 +88,23 @@ export default class GameEngine implements GameEvents {
     }
 
     private onDiceClick() {
+
         let diceArray = [1, 2, 3, 4, 5, 6];
         let randInt1 = this.getRandomInt(diceArray.length);
         let randInt2 = this.getRandomInt(diceArray.length);
         let suffledDiceArr = this.shuffleDice(diceArray);
 
-        // let value: number[] = [6, 5];
+        // TODO: Remove Cheat Dice Value
         let value: number[] = [];
-        value.push(suffledDiceArr[randInt1]);
-        value.push(suffledDiceArr[randInt2]);
+        if (this.diceCheatValue.length) {
+            value = [this.diceCheatValue[0], this.diceCheatValue[1]];
+        } else {
+            // let value: number[] = [6, 5];
+            value.push(suffledDiceArr[randInt1]);
+            value.push(suffledDiceArr[randInt2]);
+        }
         // // value.push(randInt1);
         // // value.push(randInt2);
-
         // boradcast dice value to clients
         this.players_arr[this.turnIndex].diceValue = value;
         this.players_arr[this.turnIndex].movePawn();
@@ -223,7 +229,7 @@ export default class GameEngine implements GameEvents {
     }
 
     private changeTurn() {
-        
+
         let player = this.players_arr[this.turnIndex];
         let isDouble = player.diceValue[0] == player.diceValue[1];
         if (isDouble) {
