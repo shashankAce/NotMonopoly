@@ -1,9 +1,9 @@
 
 
-import { GAME_MODE, PROPERTY_COUNT } from "../Config";
+import { BUTTON_ID, GAME_MODE, PROPERTY_COUNT } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
-import { Events, UIEvents } from "../core/EventNames";
+import { Events, HUDEvents, UIEvents } from "../core/EventNames";
 import GameEngine from "../core/engine/GameEngine";
 import { GameEvents } from "../core/GameEvents";
 import LayoutController from "../core/LayoutController";
@@ -196,6 +196,12 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
         clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
+        // hud Events
+        clientEvent.on(HUDEvents.menu, this.onMenuClick, this);
+        clientEvent.on(HUDEvents.build, this.onBuildClick, this);
+        clientEvent.on(HUDEvents.mortgage, this.onMortgageClick, this);
+        clientEvent.on(HUDEvents.redeem, this.onRedeemClick, this);
+        clientEvent.on(HUDEvents.trade, this.onTradeClick, this);
     }
 
     private onShowBuyPropertyPopup(property: GProperty) {
@@ -275,6 +281,9 @@ export default class BoardController extends LayoutController implements GameEve
     }
 
     onMenuClick() {
+        if (!this.hudButtons[BUTTON_ID.MENU].isEnabled)
+            this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
+        this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
         this.popupController.showMenuPopup("1");
     }
 
@@ -319,6 +328,10 @@ export default class BoardController extends LayoutController implements GameEve
 
     }
     onTradeClick() {
+
+    }
+
+    disableHudButtons(bool: boolean) {
 
     }
 }

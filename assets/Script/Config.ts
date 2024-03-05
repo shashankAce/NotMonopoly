@@ -111,6 +111,30 @@ export const PROPERTY_COUNT = {
     "eight": 3,
 }
 
+export const PROPERTY_COLOR = {
+    "one": "#48af53",
+    "two": "#7c65ab",
+    "three": "#bccd41",
+    "four": "#0ebcd7",
+    "five": "#f33c8c",
+    "six": "#f27036",
+    "seven": "#e7343a",
+    "eight": "#f3b933"
+}
+
+export const enum BUTTON_STATE {
+    OPENED,
+    CLOSED
+}
+
+export enum BUTTON_ID {
+    MENU,
+    BUILD,
+    MORTGAGE,
+    REDEEM,
+    TRADE
+}
+
 // export enum E_SPECIAL {
 //     TAX = "TAX",
 //     SPIN = "SPIN",

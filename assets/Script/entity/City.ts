@@ -1,3 +1,4 @@
+import { PROPERTY_COLOR } from "../Config";
 import { clientEvent } from "../core/ClientEvent";
 import { UIEvents } from "../core/EventNames";
 import Property from "../core/Property";
@@ -17,6 +18,7 @@ export default class City extends Property {
         super.onLoad();
         this.pNameLabel.string = this.data.name;
         this.pPriceLabel.string = String(this.data.price);
+        this.tileColorNode.color = new cc.Color().fromHEX(PROPERTY_COLOR[this.data.group]);
     }
 
     setSide(side: number) {

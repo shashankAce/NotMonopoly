@@ -41,3 +41,11 @@ export const UIEvents = {
     onUserFold: "onUserFold",
     onUserBuild: "onUserBuild",
 }
+
+export const HUDEvents = {
+    menu: "menu",
+    build: "build",
+    mortgage: "mortgage",
+    redeem: "redeem",
+    trade: "trade"
+}
