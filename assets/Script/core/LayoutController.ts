@@ -236,7 +236,7 @@ export default class LayoutController extends cc.Component {
     disableHudButtons(bool: boolean) {
         this.hudButtons.forEach(element => {
             if (!element.isEnabled) {
-                element.button.getComponent(cc.Button).interactable = false;
+                element.button.getComponent(cc.Button).interactable = !bool;
             }
         });
     }

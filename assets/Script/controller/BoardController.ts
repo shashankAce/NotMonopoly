@@ -280,45 +280,60 @@ export default class BoardController extends LayoutController implements GameEve
         return playerData;
     }
 
-    onMenuClick() {
-        if (!this.hudButtons[BUTTON_ID.MENU].isEnabled)
-            this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
-        this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
-        this.popupController.showMenuPopup("1");
-    }
-
     onCheatSubmit() {
         this.gameEngine.diceCheatValue = this.cheatController.getValue();
     }
 
-    onBuildClick() {
-        let pCount = {};
-        let player = this.getActivePlayer();
-        this.property_map.forEach((property, index) => {
-            if (property.isSold && property.soldTo.playerId == player.playerId) {
-                if (!pCount[property.data.group]) {
-                    pCount[property.data.group] = [];
-                }
-                pCount[property.data.group].push(property);
+    onMenuClick(node, event) {
+        if (event == "1") {
+            if (!this.hudButtons[BUTTON_ID.MENU].isEnabled) {
+                this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
+                this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
+                this.popupController.showMenuPopup("1");
             }
-        });
-
-        let eligible_prop_group = null;
-
-        let keys = Object.keys(pCount);
-        keys.forEach((key, index) => {
-            if (pCount[key].length == PROPERTY_COUNT[key]) {
-                eligible_prop_group = key;
-            }
-        });
-
-        if (eligible_prop_group) {
-            // highlight the properties eligible
         } else {
-            this.popupController.showBuildError("1");
+            this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
+            this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
+            this.popupController.showMenuPopup("0");
         }
+    }
 
-        clientEvent.dispatchEvent(UIEvents.onUserBuild);
+    onBuildClick(node, event) {
+        if (event == "1") {
+            if (!this.hudButtons[BUTTON_ID.BUILD].isEnabled) {
+                this.hudButtons[BUTTON_ID.BUILD].isEnabled = !this.hudButtons[BUTTON_ID.BUILD].isEnabled;
+                let pCount = {};
+                let player = this.getActivePlayer();
+                this.property_map.forEach((property, index) => {
+                    if (property.isSold && property.soldTo.playerId == player.playerId) {
+                        if (!pCount[property.data.group]) {
+                            pCount[property.data.group] = [];
+                        }
+                        pCount[property.data.group].push(property);
+                    }
+                });
+
+                let eligible_prop_group = null;
+
+                let keys = Object.keys(pCount);
+                keys.forEach((key, index) => {
+                    if (pCount[key].length == PROPERTY_COUNT[key]) {
+                        eligible_prop_group = key;
+                    }
+                });
+
+                if (eligible_prop_group) {
+                    // highlight the properties eligible
+                } else {
+                    this.popupController.showBuildPopup("1", false);
+                }
+                clientEvent.dispatchEvent(UIEvents.onUserBuild);
+            }
+        } else {
+            this.hudButtons[BUTTON_ID.BUILD].isEnabled = !this.hudButtons[BUTTON_ID.BUILD].isEnabled;
+            this.disableHudButtons(this.hudButtons[BUTTON_ID.BUILD].isEnabled);
+            this.popupController.showBuildPopup("0", false);
+        }
     }
 
     onMortgageClick() {
@@ -328,10 +343,6 @@ export default class BoardController extends LayoutController implements GameEve
 
     }
     onTradeClick() {
-
-    }
-
-    disableHudButtons(bool: boolean) {
 
     }
 }
