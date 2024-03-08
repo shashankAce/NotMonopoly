@@ -35,9 +35,6 @@ class PopupObj {
 export default class PopupController extends cc.Component {
 
     @property(cc.Node)
-    build_error: cc.Node = null;
-
-    @property(cc.Node)
     menuPopup: cc.Node = null
 
     @property(PopupObj)
@@ -71,7 +68,7 @@ export default class PopupController extends cc.Component {
         if (eligible) {
 
         } else {
-            this.build_error.active = active;
+            // this.build_error.active = active;
         }
     }
 

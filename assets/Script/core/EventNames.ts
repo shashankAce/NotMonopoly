@@ -40,6 +40,9 @@ export const UIEvents = {
     onUserBid: "onUserBid",
     onUserFold: "onUserFold",
     onUserBuild: "onUserBuild",
+    // trade
+    onPropSelect: "onPropSelect",
+    onPropDeselect: "onPropDeselect",
 }
 
 export const HUDEvents = {
