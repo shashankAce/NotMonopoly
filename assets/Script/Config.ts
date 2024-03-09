@@ -122,19 +122,6 @@ export const PROPERTY_COLOR = {
     "eight": "#f3b933"
 }
 
-export const enum BUTTON_STATE {
-    OPENED,
-    CLOSED
-}
-
-export enum BUTTON_ID {
-    MENU,
-    BUILD,
-    MORTGAGE,
-    REDEEM,
-    TRADE
-}
-
 // export enum E_SPECIAL {
 //     TAX = "TAX",
 //     SPIN = "SPIN",

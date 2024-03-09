@@ -1,9 +1,10 @@
-import { IProperty } from "../Config";
+import { IPlayerInfo, IProperty } from "../Config";
 import Popup from "../core/Popup";
 import PopupCity from "../popup/PopupCity";
 import PopupRent from "../popup/PopupRent";
 import PopupSale from "../popup/PopupSale";
 import PopupStation from "../popup/PopupStation";
+import TradePopup from "../popup/TradePopup";
 
 const { ccclass, property } = cc._decorator;
 
@@ -34,9 +35,6 @@ class PopupObj {
 @ccclass
 export default class PopupController extends cc.Component {
 
-    @property(cc.Node)
-    menuPopup: cc.Node = null
-
     @property(PopupObj)
     popupPrefabs: PopupObj[] = [];
 
@@ -52,24 +50,24 @@ export default class PopupController extends cc.Component {
 
     protected onLoad(): void {
         this.transparent_layer.opacity = 0;
-        // this.build_error.active = false;
-        this.menuPopup.active = false;
     }
 
-    showMenuPopup(show) {
-        let active = show == '1';
-        this.menuPopup.active = active;
-        this.menuPopup.opacity = active ? 255 : 0;
+    showBuildPopup() {
+
     }
 
-    showBuildPopup(show, eligible: boolean) {
-        let active = show == "1";
+    showTradePopup(options) {
+        let pre_popup = this.popupPool.pop();
+        if (pre_popup)
+            this.node.removeChild(pre_popup.node);
 
-        if (eligible) {
-
-        } else {
-            // this.build_error.active = active;
-        }
+        let prefab = this.getPrefabObj(E_Popup.trade);
+        let node = cc.instantiate(prefab);
+        this.node.addChild(node);
+        //
+        let trade_class = node.getComponent(TradePopup);
+        trade_class.initialize(options);
+        this.popupPool.push(trade_class);
     }
 
     showSalePopup(data, isBidActive: boolean) {

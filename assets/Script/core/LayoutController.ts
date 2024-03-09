@@ -1,6 +1,6 @@
 
 import CheatController from "../CheatController";
-import { BUTTON_ID, BUTTON_STATE, IConfig, IProperty, tilePos } from "../Config";
+import { IConfig, IProperty, tilePos } from "../Config";
 import PopupController from "../controller/PopupController";
 import { clientEvent } from "../core/ClientEvent";
 import City from "../entity/City";
@@ -8,26 +8,11 @@ import Corner from "../entity/Corner";
 import Dice from "../entity/Dice";
 import Player from "../entity/Player";
 import Station from "../entity/Station";
-import { Events, HUDEvents } from "./EventNames";
+import Popup from "./Popup";
 import Property from "./Property";
 
 const DicePos = [-610, 610];
-
 const { ccclass, property } = cc._decorator;
-
-@ccclass('ButtonObject')
-export class ButtonObject {
-
-    @property({
-        type: cc.Enum(BUTTON_ID)
-    })
-    name: BUTTON_ID = BUTTON_ID.MENU;
-
-    @property(cc.Node)
-    button: cc.Node = null;
-
-    isEnabled = false;
-}
 
 @ccclass
 export default class LayoutController extends cc.Component {
@@ -68,6 +53,17 @@ export default class LayoutController extends cc.Component {
     @property(cc.Node)
     highlight_layer: cc.Node = null;
 
+    @property(Popup)
+    errorMsg: Popup = null;
+
+    @property(Popup)
+    menuPopup: Popup = null
+
+    @property(cc.Node)
+    tradeOptionsLayout: cc.Node = null;
+
+    protected tradeOptionsTween: cc.Tween = null;
+
     @property(PopupController)
     popupController: PopupController = null;
 
@@ -78,15 +74,13 @@ export default class LayoutController extends cc.Component {
 
     protected player_array: Player[] = [];
     protected dice_array: Dice[] = [];
-    // protected propertyArr: Property[] = [];
     protected propertyData: IProperty[] = [];
-
     public property_map: Map<string, Property>;
 
-    @property(ButtonObject)
-    hudButtons: ButtonObject[] = [];
+    protected onLoad(): void {
+        this.tradeOptionsLayout.setPosition(0, 465);
+    }
 
-    public state: BUTTON_STATE = BUTTON_STATE.CLOSED;
     start() {
 
         // cc.assetManager.loadRemote(Config.gameCfgUrl, {type: 'png'}, function () {
@@ -233,11 +227,19 @@ export default class LayoutController extends cc.Component {
         return this.player_array.find((player) => player.playerId == id);
     }
 
-    disableHudButtons(bool: boolean) {
-        this.hudButtons.forEach(element => {
-            if (!element.isEnabled) {
-                element.button.getComponent(cc.Button).interactable = !bool;
-            }
-        });
+    protected onMenuClick() {
+        this.menuPopup.show(false);
+    }
+
+    protected onAudioToggle(node) {
+
+    }
+
+
+    protected showErrorMsg(msg: string) {
+        if (this.errorMsg.isErrorPopup) {
+            this.errorMsg.msgLabel.string = msg;
+        }
+        this.errorMsg.show(true);
     }
 }

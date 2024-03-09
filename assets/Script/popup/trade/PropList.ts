@@ -1,5 +1,7 @@
+import { IProperty } from "../../Config";
 import { clientEvent } from "../../core/ClientEvent";
 import { UIEvents } from "../../core/EventNames";
+import Property from "../../core/Property";
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,17 +14,19 @@ export default class PropList extends cc.Component {
     @property(cc.Label)
     prop_price: cc.Label = null;
 
-    private index = 0;
+    public data: IProperty = null;
 
-    init_prop(index) {
-        this.index = index;
+    init_prop(prop: Property) {
+        this.data = prop.data;
+        this.prop_name.string = prop.data.name;
+        this.prop_price.string = String(prop.data.price);
     }
 
     onToggle(event: cc.Toggle) {
         if (event.isChecked) {
-            clientEvent.dispatchEvent(UIEvents.onPropSelect, this.index);
+            clientEvent.dispatchEvent(UIEvents.onPropSelect, this);
         } else {
-            clientEvent.dispatchEvent(UIEvents.onPropDeselect, this.index);
+            clientEvent.dispatchEvent(UIEvents.onPropDeselect, this);
         }
     }
 }

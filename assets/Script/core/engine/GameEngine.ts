@@ -73,7 +73,8 @@ export default class GameEngine implements GameEvents {
         if (players.length > 1) {
             players.forEach((data, index) => {
                 let gPlayer = new GPlayer();
-                gPlayer.playerId = this.getRandId().toString();
+                // gPlayer.playerId = this.getRandId().toString();
+                gPlayer.playerId = data.id;
                 gPlayer.index = index;
                 gPlayer.balance = this.initial_bal;
                 gPlayer.init(data);
@@ -282,6 +283,11 @@ export default class GameEngine implements GameEvents {
         this.changeBidTurn();
     }
 
+    private onUserTrade(tradeTo: GPlayer) {
+        let player = this.players_arr[this.turnIndex];
+
+    }
+
     private getCurrentPlayer() {
         let player = this.players_arr[this.turnIndex];
         return player;
@@ -310,6 +316,7 @@ export default class GameEngine implements GameEvents {
         clientEvent.on(UIEvents.onBuyClick, this.onBuyProperty, this);
         clientEvent.on(UIEvents.onUserBid, this.onBidProperty, this);
         clientEvent.on(UIEvents.onUserFold, this.onUserFold, this);
+        clientEvent.on(UIEvents.onUserTrade, this.onUserTrade, this);
     }
 
     private startWaitTimer(fncToCall: Function) {
@@ -321,6 +328,11 @@ export default class GameEngine implements GameEvents {
             cc.log(error);
         }
     }
+    /// done
+    onTradeProperty() {
+        clientEvent.dispatchEvent(Events.onTradeProperty);
+
+    };
 
     onRollDouble() {
         clientEvent.dispatchEvent(Events.onRollDouble);
@@ -345,19 +357,17 @@ export default class GameEngine implements GameEvents {
 
     };
 
+    /// done
     onBid() {
         clientEvent.dispatchEvent(Events.onBid);
-
-    };
-    onDealProperty() {
-        clientEvent.dispatchEvent(Events.onDealProperty);
 
     };
     onSellProperty() {
         clientEvent.dispatchEvent(Events.onSellProperty);
 
     };
-    onRentPaid() {// done
+    /// done
+    onRentPaid() {
         clientEvent.dispatchEvent(Events.onRentPaid);
 
     };

@@ -9,7 +9,7 @@ export interface GameEvents {
     onBidProperty: Function;
 
     onBid: Function;
-    onDealProperty: Function;
+    onTradeProperty: Function;
     onSellProperty: Function;
     onRentPaid: Function;
     onDiceSpin: Function;

@@ -16,7 +16,7 @@ export const Events = {
 
     onBid: "onBid",
     onBidActive: "onBidActive",
-    onDealProperty: "onDealProperty",
+    onTradeProperty: "onTradeProperty",
     onSellProperty: "onSellProperty",
     onRentPaid: "onRentPaid",
     onDiceSpin: "onDiceSpin",
@@ -40,15 +40,8 @@ export const UIEvents = {
     onUserBid: "onUserBid",
     onUserFold: "onUserFold",
     onUserBuild: "onUserBuild",
+    onUserTrade: "onUserTrade",
     // trade
     onPropSelect: "onPropSelect",
     onPropDeselect: "onPropDeselect",
-}
-
-export const HUDEvents = {
-    menu: "menu",
-    build: "build",
-    mortgage: "mortgage",
-    redeem: "redeem",
-    trade: "trade"
 }

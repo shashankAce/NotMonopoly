@@ -1,6 +1,6 @@
 import { E_Popup } from "../controller/PopupController";
 import { clientEvent } from "./ClientEvent";
-import { Events, UIEvents } from "./EventNames";
+import { UIEvents } from "./EventNames";
 
 const { ccclass, property } = cc._decorator;
 
@@ -10,16 +10,29 @@ export default class Popup extends cc.Component {
     @property(cc.Node)
     closeBtn: cc.Node = null;
 
-    popup_type: E_Popup = null;
+    // FOR ERROR MSG
+    @property(cc.Boolean)
+    public isErrorPopup: boolean = false;
+    @property({
+        type: cc.Label,
+        visible() {
+            return this.isErrorPopup
+        },
+    })
+    public msgLabel: cc.Label = null;
+    // FOR ERROR MSG
 
+    public popup_type: E_Popup = null;
     protected isActive = false;
 
-    protected onLoad(): void {
-
-    }
-
     show(easing: boolean) {
+
         if (easing) {
+            
+            this.node.active = true;
+            this.node.opacity = 0;
+            this.node.scale = 1;
+
             let animation = this.node.getComponent(cc.Animation);
             let appear_state = animation.getAnimationState('appear')
             let hide_state = animation.getAnimationState('hide')

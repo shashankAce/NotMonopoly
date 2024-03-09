@@ -1,9 +1,9 @@
 
 
-import { BUTTON_ID, GAME_MODE, PROPERTY_COUNT } from "../Config";
+import { GAME_MODE, PROPERTY_COUNT } from "../Config";
 import Pawn from "../Pawn";
 import { clientEvent } from "../core/ClientEvent";
-import { Events, HUDEvents, UIEvents } from "../core/EventNames";
+import { Events, UIEvents } from "../core/EventNames";
 import GameEngine from "../core/engine/GameEngine";
 import { GameEvents } from "../core/GameEvents";
 import LayoutController from "../core/LayoutController";
@@ -13,6 +13,8 @@ import Socket from "../socket/Socket";
 import GPlayer from "../core/engine/GPlayer";
 import PopupSale from "../popup/PopupSale";
 import GProperty from "../core/engine/GProperty";
+import Property from "../core/Property";
+import { Locals } from "../core/Locals";
 const { ccclass } = cc._decorator;
 
 @ccclass
@@ -23,7 +25,6 @@ export default class BoardController extends LayoutController implements GameEve
     onUseCard: Function;
     onMortgageProperty: Function;
     onBid: Function;
-    onDealProperty: Function;
     onSellProperty: Function;
     onDiceSpin: Function;
     onSentToJail: Function;
@@ -36,6 +37,7 @@ export default class BoardController extends LayoutController implements GameEve
     socketController: Socket;
 
     protected onLoad(): void {
+        super.onLoad();
         this.gameEngine = new GameEngine();
     }
 
@@ -110,7 +112,7 @@ export default class BoardController extends LayoutController implements GameEve
         // this.turnOver();
     }
 
-    private getActivePlayer() {
+    public getActivePlayer() {
         return this.gameEngine.players_arr[this.gameEngine.turnIndex];
     }
 
@@ -182,28 +184,6 @@ export default class BoardController extends LayoutController implements GameEve
         this.arrangePawns();
     }
 
-    protected registerEvents(): void {
-        // Local Events
-        clientEvent.on(UIEvents.ShowStationInfo, this.showStationInfo, this);
-        clientEvent.on(UIEvents.ShowCityInfo, this.showCityInfo, this);
-        clientEvent.on(UIEvents.HidePopup, this.hidePopup, this);
-        // Local Events
-        clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
-        clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
-        clientEvent.on(Events.spinDice, this.onSpinDice, this);
-        clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
-        clientEvent.on(Events.onBidActive, this.onBidProperty, this);
-        clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
-        clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
-        clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
-        // hud Events
-        clientEvent.on(HUDEvents.menu, this.onMenuClick, this);
-        clientEvent.on(HUDEvents.build, this.onBuildClick, this);
-        clientEvent.on(HUDEvents.mortgage, this.onMortgageClick, this);
-        clientEvent.on(HUDEvents.redeem, this.onRedeemClick, this);
-        clientEvent.on(HUDEvents.trade, this.onTradeClick, this);
-    }
-
     private onShowBuyPropertyPopup(property: GProperty) {
         let data = {
             property: property.data,
@@ -252,6 +232,10 @@ export default class BoardController extends LayoutController implements GameEve
         }
     }
 
+    onTradeProperty() {
+
+    }
+
     getDummyPlayers() {
         let playerData = [
             {
@@ -284,65 +268,133 @@ export default class BoardController extends LayoutController implements GameEve
         this.gameEngine.diceCheatValue = this.cheatController.getValue();
     }
 
-    onMenuClick(node, event) {
-        if (event == "1") {
-            if (!this.hudButtons[BUTTON_ID.MENU].isEnabled) {
-                this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
-                this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
-                this.popupController.showMenuPopup("1");
-            }
-        } else {
-            this.hudButtons[BUTTON_ID.MENU].isEnabled = !this.hudButtons[BUTTON_ID.MENU].isEnabled;
-            this.disableHudButtons(this.hudButtons[BUTTON_ID.MENU].isEnabled);
-            this.popupController.showMenuPopup("0");
-        }
-    }
-
     onBuildClick(node, event) {
-        if (event == "1") {
-            if (!this.hudButtons[BUTTON_ID.BUILD].isEnabled) {
-                this.hudButtons[BUTTON_ID.BUILD].isEnabled = !this.hudButtons[BUTTON_ID.BUILD].isEnabled;
-                let pCount = {};
-                let player = this.getActivePlayer();
-                this.property_map.forEach((property, index) => {
-                    if (property.isSold && property.soldTo.playerId == player.playerId) {
-                        if (!pCount[property.data.group]) {
-                            pCount[property.data.group] = [];
-                        }
-                        pCount[property.data.group].push(property);
-                    }
-                });
-
-                let eligible_prop_group = null;
-
-                let keys = Object.keys(pCount);
-                keys.forEach((key, index) => {
-                    if (pCount[key].length == PROPERTY_COUNT[key]) {
-                        eligible_prop_group = key;
-                    }
-                });
-
-                if (eligible_prop_group) {
-                    // highlight the properties eligible
-                } else {
-                    this.popupController.showBuildPopup("1", false);
+        let pCount = {};
+        let player = this.getActivePlayer();
+        this.property_map.forEach((property, index) => {
+            if (property.isSold && property.soldTo.playerId == player.playerId) {
+                if (!pCount[property.data.group]) {
+                    pCount[property.data.group] = [];
                 }
-                clientEvent.dispatchEvent(UIEvents.onUserBuild);
+                pCount[property.data.group].push(property);
             }
+        });
+
+        let eligible_prop_group = null;
+
+        let keys = Object.keys(pCount);
+        keys.forEach((key, index) => {
+            if (pCount[key].length == PROPERTY_COUNT[key]) {
+                eligible_prop_group = key;
+            }
+        });
+
+        if (eligible_prop_group) {
+            // highlight the properties eligible
         } else {
-            this.hudButtons[BUTTON_ID.BUILD].isEnabled = !this.hudButtons[BUTTON_ID.BUILD].isEnabled;
-            this.disableHudButtons(this.hudButtons[BUTTON_ID.BUILD].isEnabled);
-            this.popupController.showBuildPopup("0", false);
+            //TODO
+            this.popupController.showBuildPopup();
         }
+        clientEvent.dispatchEvent(UIEvents.onUserBuild);
+        this.showErrorMsg(Locals.BUILD_ERROR);
     }
 
     onMortgageClick() {
 
     }
+
     onRedeemClick() {
 
     }
-    onTradeClick() {
 
+    async onTradeClick() {
+        return new Promise((resolve: Function, reject: Function) => {
+
+            if (this.tradeOptionsTween) {
+                resolve();
+                return;
+            }
+
+            let pos = this.tradeOptionsLayout.position;
+            let tweenPos = 0;
+            if (pos.y == 0) {
+                tweenPos = 465;
+            }
+
+            if (tweenPos == 0) {
+                this.tradeOptionsLayout.children.forEach((options, index) => {
+                    if (index < this.gameEngine.players_arr.length) {
+                        let player = this.gameEngine.players_arr[index];
+                        if (player.playerId != this.myId) {
+                            options.color = player.color;
+                            options.getChildByName('pName').getComponent(cc.Label).string = player.name;
+                            options.getChildByName('pawn').color = player.color;
+                            options.active = true;
+                        } else {
+                            options.active = false;
+                        }
+                    } else {
+                        options.active = false;
+                    }
+                });
+            }
+
+            this.tradeOptionsTween = cc.tween(this.tradeOptionsLayout)
+                .to(0.2, { y: tweenPos })
+                // .delay(0.3)
+                .delay(0.1)
+                .call(() => {
+                    this.tradeOptionsTween = null;
+                    resolve();
+                })
+                .start();
+
+        });
+    }
+
+    async onTradeOptionPick(event, param) {
+        await this.onTradeClick();
+
+        let playerProp: Property[] = [];
+        let oppnentProp: Property[] = [];
+
+        let tradeTo = this.gameEngine.players_arr[Number(param)];
+        this.property_map.forEach((property, index) => {
+            if (property.isSold) {
+                if (property.soldTo.playerId == tradeTo.playerId) {
+                    oppnentProp.push(property);
+                } else if (property.soldTo.playerId == this.myId) {
+                    playerProp.push(property);
+                }
+            }
+        });
+
+        if (playerProp.length || oppnentProp.length) {
+            let data = {
+                data: tradeTo.data,
+                boardController: this,
+            }
+            this.popupController.showTradePopup(data);
+        } else {
+            this.showErrorMsg(Locals.TRADE_ERROR);
+        }
+    }
+
+    protected registerEvents(): void {
+        // Local Events
+        clientEvent.on(UIEvents.ShowStationInfo, this.showStationInfo, this);
+        clientEvent.on(UIEvents.ShowCityInfo, this.showCityInfo, this);
+        clientEvent.on(UIEvents.HidePopup, this.hidePopup, this);
+        // Local Events
+        clientEvent.on(Events.onTurnChange, this.onTurnChange, this);
+        clientEvent.on(Events.onAddPlayers, this.createPlayers, this);
+        clientEvent.on(Events.spinDice, this.onSpinDice, this);
+        clientEvent.on(Events.ShowBuyProperty, this.onShowBuyPropertyPopup, this);
+        clientEvent.on(Events.onBidActive, this.onBidProperty, this);
+        clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
+        clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
+        clientEvent.on(Events.onTradeProperty, this.onTradeProperty, this);
+        clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
+        // hud Events
     }
 }
