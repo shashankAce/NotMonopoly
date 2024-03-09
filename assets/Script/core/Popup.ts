@@ -25,6 +25,9 @@ export default class Popup extends cc.Component {
     public popup_type: E_Popup = null;
     protected isActive = false;
 
+    protected onLoad(): void {
+    }
+
     show(easing: boolean) {
 
         if (easing) {

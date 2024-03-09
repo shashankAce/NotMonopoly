@@ -268,7 +268,8 @@ export default class BoardController extends LayoutController implements GameEve
         this.gameEngine.diceCheatValue = this.cheatController.getValue();
     }
 
-    onBuildClick(node, event) {
+    onBuildClick() {
+
         let pCount = {};
         let player = this.getActivePlayer();
         this.property_map.forEach((property, index) => {
@@ -290,13 +291,12 @@ export default class BoardController extends LayoutController implements GameEve
         });
 
         if (eligible_prop_group) {
+            // TODO
             // highlight the properties eligible
-        } else {
-            //TODO
             this.popupController.showBuildPopup();
+        } else {
+            this.showErrorMsg(Locals.BUILD_ERROR);
         }
-        clientEvent.dispatchEvent(UIEvents.onUserBuild);
-        this.showErrorMsg(Locals.BUILD_ERROR);
     }
 
     onMortgageClick() {
@@ -310,6 +310,7 @@ export default class BoardController extends LayoutController implements GameEve
     async onTradeClick() {
         return new Promise((resolve: Function, reject: Function) => {
 
+            this.tradeOptionsLayout.parent.active = true;
             if (this.tradeOptionsTween) {
                 resolve();
                 return;
@@ -393,8 +394,7 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.onBidActive, this.onBidProperty, this);
         clientEvent.on(Events.onBidTurnChange, this.onBidTurnChange, this);
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
-        clientEvent.on(Events.onTradeProperty, this.onTradeProperty, this);
         clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
-        // hud Events
+        clientEvent.on(Events.onTradeProperty, this.onTradeProperty, this);
     }
 }

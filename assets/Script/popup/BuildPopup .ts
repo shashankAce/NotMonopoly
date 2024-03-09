@@ -5,10 +5,16 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import { clientEvent } from "../core/ClientEvent";
+import { UIEvents } from "../core/EventNames";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class BuildPopup extends cc.Component {
 
+    onBuildProperty() {
+        clientEvent.dispatchEvent(UIEvents.onUserBuild);
+    }
 
 }
