@@ -14,19 +14,20 @@ export default class PropList extends cc.Component {
     @property(cc.Label)
     prop_price: cc.Label = null;
 
-    public data: IProperty = null;
+    @property(cc.Toggle)
+    toggle: cc.Toggle = null;
 
-    init_prop(prop: Property) {
+    public data: IProperty = null;
+    private callback: Function;
+
+    init_prop(prop: Property, cb: Function) {
         this.data = prop.data;
         this.prop_name.string = prop.data.name;
         this.prop_price.string = String(prop.data.price);
+        this.callback = cb;
     }
 
     onToggle(event: cc.Toggle) {
-        if (event.isChecked) {
-            clientEvent.dispatchEvent(UIEvents.onPropSelect, this);
-        } else {
-            clientEvent.dispatchEvent(UIEvents.onPropDeselect, this);
-        }
+        this.callback && this.callback(this, event.isChecked);
     }
 }

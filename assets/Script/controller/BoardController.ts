@@ -323,10 +323,11 @@ export default class BoardController extends LayoutController implements GameEve
             }
 
             if (tweenPos == 0) {
+                let activePlayer = this.getActivePlayer();
                 this.tradeOptionsLayout.children.forEach((options, index) => {
                     if (index < this.gameEngine.players_arr.length) {
                         let player = this.gameEngine.players_arr[index];
-                        if (player.playerId != this.myId) {
+                        if (player.playerId != activePlayer.playerId) {
                             options.color = player.color;
                             options.getChildByName('pName').getComponent(cc.Label).string = player.name;
                             options.getChildByName('pawn').color = player.color;
@@ -359,12 +360,13 @@ export default class BoardController extends LayoutController implements GameEve
         let playerProp: Property[] = [];
         let oppnentProp: Property[] = [];
 
+        let activePlayer = this.getActivePlayer();
         let tradeTo = this.gameEngine.players_arr[Number(param)];
         this.property_map.forEach((property, index) => {
             if (property.isSold) {
                 if (property.soldTo.playerId == tradeTo.playerId) {
                     oppnentProp.push(property);
-                } else if (property.soldTo.playerId == this.myId) {
+                } else if (property.soldTo.playerId == activePlayer.playerId) {
                     playerProp.push(property);
                 }
             }

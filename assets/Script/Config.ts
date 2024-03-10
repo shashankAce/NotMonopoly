@@ -1,7 +1,6 @@
 export const config = {
     gameCfgUrl: "",
     tileWidth: 84,
-    currency: "₹",
     waitTime: 10
 }
 

@@ -1,6 +1,7 @@
 import { E_Station_Logo, IProperty, config } from "../Config";
 import { clientEvent } from "../core/ClientEvent";
 import { Events, UIEvents } from "../core/EventNames";
+import { Locals } from "../core/Locals";
 import Property from "../core/Property";
 
 const { ccclass, property } = cc._decorator;
@@ -35,7 +36,7 @@ export default class Station extends Property {
         super.onLoad();
 
         this.pNameLabel.string = this.data.name;
-        this.pPriceLabel.string = (config.currency + " ").concat(this.data.price.toString());
+        this.pPriceLabel.string = (Locals.CURRENCY + " ").concat(this.data.price.toString());
 
         let ind = Object.keys(E_Station_Logo).indexOf(this.data.logo);
         if (ind > -1) {

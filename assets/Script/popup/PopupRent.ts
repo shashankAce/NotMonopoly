@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import { config } from "../Config";
+import { Locals } from "../core/Locals";
 import Popup from "../core/Popup";
 import Player from "../entity/Player";
 
@@ -31,6 +32,6 @@ export default class PopupRent extends Popup {
         this.user1_label.string = user1.name;
         this.user2_label.string = user2.name;
 
-        this.rent.string = config.currency + " " + rent.toString();
+        this.rent.string = Locals.CURRENCY + " " + rent.toString();
     }
 }

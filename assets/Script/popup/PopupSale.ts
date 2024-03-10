@@ -108,7 +108,7 @@ export default class PopupSale extends Popup {
         this.salePrefabNode.removeAllChildren();
 
         this.header.string = Locals.SALE;
-        this.sale_price_label.string = 'For ' + config.currency + ' ' + this.propertyData.price.toString();
+        this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.propertyData.price.toString();
 
 
         if (data.property.type == E_PROPERTY_TYPE.CITY) {
@@ -162,9 +162,9 @@ export default class PopupSale extends Popup {
         let property = this.boardController.gameEngine.property_map.get(gPlayer.pawnPosition.toString());
         this.buying_player_name.string = property.soldTo.name;
 
-        // this.sale_price_label.string = 'For ' + config.currency + ' ' + amount.toString();
+        // this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + amount.toString();
         this.selling_price.node.parent.opacity = 0;
-        this.selling_price.string = config.currency + ' ' + amount.toString();
+        this.selling_price.string = Locals.CURRENCY + ' ' + amount.toString();
 
         this.scheduleOnce(() => {
             this.selling_price.node.parent.getComponent(cc.Animation).play('price_appear');
@@ -219,7 +219,7 @@ export default class PopupSale extends Popup {
 
         let value = this.available_bal * this.priceRange.progress;
         this.sale_price = Math.floor(value);
-        this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
+        this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
 
         if (this.boardController.gameEngine.gameMode == GAME_MODE.ONLINE_MULTIPLAYER) {
             this.freezeBidLayout(true);
@@ -253,7 +253,7 @@ export default class PopupSale extends Popup {
         if (gPlayer.isFold) {
             str = name + " Folded";
         } else {
-            str = name + " " + config.currency + this.sale_price;
+            str = name + " " + Locals.CURRENCY + this.sale_price;
         }
         bidRow.children[0].getComponent(cc.Label).string = str;
         this.bidContentView.addChild(bidRow);
@@ -270,7 +270,7 @@ export default class PopupSale extends Popup {
         // cc.log(param.progress);
         let value = this.available_bal * param.progress;
         this.sale_price = Math.floor(value);
-        this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
+        this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
     }
 
     private getBiddingPlayer() {

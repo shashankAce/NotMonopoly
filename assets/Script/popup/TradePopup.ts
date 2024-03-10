@@ -1,13 +1,20 @@
-import { IPlayerInfo, IProperty } from "../Config";
+import { IPlayerInfo, IProperty, config } from "../Config";
 import BoardController from "../controller/BoardController";
 import { clientEvent } from "../core/ClientEvent";
 import { UIEvents } from "../core/EventNames";
+import { Locals } from "../core/Locals";
 import Popup from "../core/Popup";
 import Property from "../core/Property";
 import Player from "../entity/Player";
 import PropList from "./trade/PropList";
 
 const { ccclass, property } = cc._decorator;
+
+enum E_TRADE {
+    NONE,
+    SELL,
+    BUY
+}
 
 @ccclass
 export default class TradePopup extends Popup {
@@ -37,30 +44,39 @@ export default class TradePopup extends Popup {
     userBalanceLabel: cc.Label = null;
 
     @property(cc.Label)
-    sellingPriceLabel: cc.Label = null;
+    sendMoneyLabel: cc.Label = null;
 
     @property(cc.Label)
-    buyingPriceLabel: cc.Label = null;
+    askMoneyLabel: cc.Label = null;
+
+    @property(cc.Node)
+    sendMoneyHighlight: cc.Node = null;
+
+    @property(cc.Node)
+    askMoneyHighlight: cc.Node = null;
 
     @property(cc.Label)
     deductingPriceLabel: cc.Label = null;
 
-    selectedProperties: IProperty[] = [];
+    private sellPropPrice = 0;
+    private buyPropPrice = 0;
+
+    private sellingProp: IProperty[] = [];
+    private buyingProp: IProperty[] = [];
 
     private boardController: BoardController;
     private tradeFrom: IPlayerInfo = null;
     private tradeTo: IPlayerInfo = null;
-    private opponentIndex = 0;
+    private userBalance = 0;
+    private tradeTypePick: E_TRADE = E_TRADE.NONE;
 
     protected onLoad(): void {
         // let gPlayer = this.boardController.gameEngine.players_arr[this.boardController.gameEngine.turnIndex];
         //   /  this.available_bal = gPlayer.balance;
-        clientEvent.on(UIEvents.onPropSelect, this.onPropSelect, this);
-        clientEvent.dispatchEvent(UIEvents.onPropSelect, this.onPropDeSelect, this);
     }
 
-    initialize(options) {
-        
+    initialize(options: { boardController: BoardController, data: IPlayerInfo }) {
+
         this.boardController = options.boardController;
         this.tradeTo = options.data;
         this.tradeFrom = this.boardController.getActivePlayer().data;
@@ -68,7 +84,17 @@ export default class TradePopup extends Popup {
         this.header.string = this.tradeFrom.name;
         this.offeredTo.string = this.tradeTo.name;
 
-        this.userBalanceLabel.string = this.boardController.getActivePlayer().balance.toString();
+        this.sendMoneyLabel.string = "0";
+        this.askMoneyLabel.string = "0";
+
+        this.userBalance = this.boardController.getActivePlayer().balance;
+        this.userBalanceLabel.string = this.userBalance.toString();
+
+        this.deductingPriceLabel.string = "0";
+
+        this.sendMoneyHighlight.opacity = 0;
+        this.askMoneyHighlight.opacity = 0;
+
 
         let playerProp: Property[] = [];
         let oppnentProp: Property[] = [];
@@ -92,7 +118,8 @@ export default class TradePopup extends Popup {
                     const node = cc.instantiate(this.prop_tab);
                     const prop_tab: PropList = node.getComponent(PropList);
                     this.sellViewContent.node.addChild(node);
-                    prop_tab.init_prop(prop);
+                    prop_tab.init_prop(prop, this.onSellingPropSelect.bind(this));
+                    prop_tab.toggle.uncheck();
                 });
             }
             if (oppnentProp.length) {
@@ -100,7 +127,8 @@ export default class TradePopup extends Popup {
                     const node = cc.instantiate(this.prop_tab);
                     const prop_tab: PropList = node.getComponent(PropList);
                     this.buyViewContent.node.addChild(node);
-                    prop_tab.init_prop(prop);
+                    prop_tab.init_prop(prop, this.onBuyingPropDeSelect.bind(this));
+                    prop_tab.toggle.uncheck();
                 });
             }
         }
@@ -108,22 +136,23 @@ export default class TradePopup extends Popup {
 
     onSliderUpdate(param: cc.Slider) {
         cc.log(param.progress);
+        if (this.tradeTypePick == E_TRADE.SELL) {
+            // let value = this.available_bal * param.progress;
+            // this.sale_price = Math.floor(value);
+            // this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
 
-        // let value = this.available_bal * param.progress;
-        // this.sale_price = Math.floor(value);
-        // this.sale_price_label.string = 'For ' + config.currency + ' ' + this.sale_price.toString();
+
+            this.deductingPriceLabel.string = "";
+
+        } else if (this.tradeTypePick == E_TRADE.BUY) {
+            // let value = this.available_bal * param.progress;
+            // this.sale_price = Math.floor(value);
+            // this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
+        }
     }
 
-    setSliderProgress(tradePrice: number, totalbalance: number) {
-        this.priceRange.progress = tradePrice / totalbalance;
-    }
-
-    private onPropSelect(prop_tab: PropList) {
-        this.selectedProperties.push(prop_tab.data);
-    }
-
-    private onPropDeSelect(prop_tab: PropList) {
-
+    setSliderProgress(tradePrice: number) {
+        this.priceRange.progress = tradePrice / this.userBalance;
     }
 
     onOfferTrade() {
@@ -148,5 +177,64 @@ export default class TradePopup extends Popup {
 
     onCancelTrade() {
         this.hide();
+    }
+
+    private onSellingPropSelect(proplist: PropList, isChecked: boolean) {
+        isChecked && this.sellingProp.push(proplist.data);
+        if (!isChecked) {
+            let ind = this.sellingProp.findIndex(value => value.index == proplist.data.index);
+            this.sellingProp.splice(ind, 1);
+        }
+
+        this.sellPropPrice = 0;
+        this.sellingProp.forEach(prop => {
+            // this.sellPropPrice += prop.price * prop.build;
+            this.sellPropPrice += prop.price;
+        });
+        this.askMoneyLabel.string = this.sellPropPrice.toString();
+        this.deductingPriceLabel.string = "+" + Locals.CURRENCY + this.askMoneyLabel;
+    }
+
+    private onBuyingPropDeSelect(proplist: PropList, isChecked: boolean) {
+        isChecked && this.buyingProp.push(proplist.data);
+        if (!isChecked) {
+            let ind = this.buyingProp.findIndex(value => value.index == proplist.data.index);
+            this.buyingProp.splice(ind, 1);
+        }
+        this.buyPropPrice = 0;
+        this.buyingProp.forEach(prop => {
+            // this.sellPropPrice += prop.price * prop.build;
+            this.buyPropPrice += prop.price;
+        });
+        this.sendMoneyLabel.string = this.buyPropPrice.toString();
+    }
+
+    onSendBtnClick() {
+        cc.Tween.stopAllByTarget(this.askMoneyHighlight);
+        cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
+
+        this.askMoneyHighlight.opacity = 0;
+        this.highlightNode(this.sendMoneyHighlight);
+
+        this.setSliderProgress(this.buyPropPrice);
+        this.tradeTypePick = E_TRADE.BUY;
+    }
+
+    onAskBtnClick() {
+        cc.Tween.stopAllByTarget(this.askMoneyHighlight);
+        cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
+
+        this.sendMoneyHighlight.opacity = 0;
+        this.highlightNode(this.askMoneyHighlight);
+
+        this.setSliderProgress(this.sellPropPrice);
+        this.tradeTypePick = E_TRADE.SELL;
+    }
+
+    private highlightNode(node: cc.Node) {
+        let tween = cc.tween(node)
+            .to(0.2, { opacity: 0 })
+            .to(0.2, { opacity: 255 });
+        cc.tween(node).repeatForever(tween).start();
     }
 }

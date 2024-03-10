@@ -5,6 +5,7 @@ import PopupRent from "../popup/PopupRent";
 import PopupSale from "../popup/PopupSale";
 import PopupStation from "../popup/PopupStation";
 import TradePopup from "../popup/TradePopup";
+import BoardController from "./BoardController";
 
 const { ccclass, property } = cc._decorator;
 
@@ -56,7 +57,7 @@ export default class PopupController extends cc.Component {
 
     }
 
-    showTradePopup(options) {
+    showTradePopup(options: { boardController: BoardController, data: IPlayerInfo }) {
         let pre_popup = this.popupPool.pop();
         if (pre_popup)
             this.node.removeChild(pre_popup.node);
