@@ -27,7 +27,8 @@ export const Events = {
     onCourt: "onCourt",
     onGo: "onGo",
     turnOver: "turnOver",
-    onBuild: "onBuild"
+    onBuild: "onBuild",
+    onToastMsg: 'onToastMsg'
 }
 
 export const UIEvents = {

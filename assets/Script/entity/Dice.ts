@@ -123,8 +123,10 @@ export default class Dice extends cc.Component {
     }
 
     onClick() {
-        if (this.isPressed)
+        if (this.isPressed) {
+            cc.log('Dice pressed state not changed');
             return;
+        }
         cc.log('Dice pressed on client');
         this.isPressed = true;
         clientEvent.dispatchEvent(UIEvents.diceClick);

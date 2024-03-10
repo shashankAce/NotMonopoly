@@ -4,4 +4,5 @@ export const Locals = {
     TRADE_ERROR: "YOU AND YOUR OPPONENT DO NOT HAVE PROPERTY TO BUY OR SELL",
     BUILD_ERROR: "BUY ALL PROPERTY OF ANY GROUP TO BUY",
     CURRENCY: "₹",
+    TRADE_BUY_SELL_ERROR: "Select any property to buy or Sell",
 }

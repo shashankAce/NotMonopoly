@@ -1,7 +1,7 @@
 import { IPlayerInfo, IProperty, config } from "../Config";
 import BoardController from "../controller/BoardController";
 import { clientEvent } from "../core/ClientEvent";
-import { UIEvents } from "../core/EventNames";
+import { Events, UIEvents } from "../core/EventNames";
 import { Locals } from "../core/Locals";
 import Popup from "../core/Popup";
 import Property from "../core/Property";
@@ -127,7 +127,7 @@ export default class TradePopup extends Popup {
                     const node = cc.instantiate(this.prop_tab);
                     const prop_tab: PropList = node.getComponent(PropList);
                     this.buyViewContent.node.addChild(node);
-                    prop_tab.init_prop(prop, this.onBuyingPropDeSelect.bind(this));
+                    prop_tab.init_prop(prop, this.onBuyingPropSelect.bind(this));
                     prop_tab.toggle.uncheck();
                 });
             }
@@ -135,23 +135,25 @@ export default class TradePopup extends Popup {
     }
 
     onSliderUpdate(param: cc.Slider) {
-        cc.log(param.progress);
         if (this.tradeTypePick == E_TRADE.SELL) {
-            // let value = this.available_bal * param.progress;
-            // this.sale_price = Math.floor(value);
-            // this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
 
+            this.sellPropPrice = Math.floor(this.userBalance * param.progress);
+            this.askMoneyLabel.string = Locals.CURRENCY + ' ' + this.sellPropPrice.toString();
 
-            this.deductingPriceLabel.string = "";
+            this.deductingPriceLabel.string = "+" + Locals.CURRENCY + " " + this.sellPropPrice;
+            this.deductingPriceLabel.node.color = cc.Color.GREEN;
 
         } else if (this.tradeTypePick == E_TRADE.BUY) {
-            // let value = this.available_bal * param.progress;
-            // this.sale_price = Math.floor(value);
-            // this.sale_price_label.string = 'For ' + Locals.CURRENCY + ' ' + this.sale_price.toString();
+
+            this.buyPropPrice = Math.floor(this.userBalance * param.progress);
+            this.sendMoneyLabel.string = Locals.CURRENCY + ' ' + this.buyPropPrice.toString();
+
+            this.deductingPriceLabel.string = "-" + Locals.CURRENCY + " " + this.buyPropPrice;
+            this.deductingPriceLabel.node.color = cc.Color.RED;
         }
     }
 
-    setSliderProgress(tradePrice: number) {
+    private setSliderProgress(tradePrice: number) {
         this.priceRange.progress = tradePrice / this.userBalance;
     }
 
@@ -192,10 +194,24 @@ export default class TradePopup extends Popup {
             this.sellPropPrice += prop.price;
         });
         this.askMoneyLabel.string = this.sellPropPrice.toString();
-        this.deductingPriceLabel.string = "+" + Locals.CURRENCY + this.askMoneyLabel;
+
+        if (this.sellingProp.length == 0) {
+            // this.unselectAllTrade();
+            if (this.tradeTypePick == E_TRADE.SELL) {
+                this.setSliderProgress(0);
+                this.deductingPriceLabel.string = "+" + Locals.CURRENCY + this.sellPropPrice;
+                this.deductingPriceLabel.node.color = cc.Color.GREEN;
+            }
+        } else {
+            if (this.tradeTypePick == E_TRADE.SELL) {
+                this.setSliderProgress(this.sellPropPrice);
+                this.deductingPriceLabel.string = "+" + Locals.CURRENCY + this.sellPropPrice;
+                this.deductingPriceLabel.node.color = cc.Color.GREEN;
+            }
+        }
     }
 
-    private onBuyingPropDeSelect(proplist: PropList, isChecked: boolean) {
+    private onBuyingPropSelect(proplist: PropList, isChecked: boolean) {
         isChecked && this.buyingProp.push(proplist.data);
         if (!isChecked) {
             let ind = this.buyingProp.findIndex(value => value.index == proplist.data.index);
@@ -203,32 +219,70 @@ export default class TradePopup extends Popup {
         }
         this.buyPropPrice = 0;
         this.buyingProp.forEach(prop => {
-            // this.sellPropPrice += prop.price * prop.build;
+            // this.buyPropPrice += prop.price * prop.build;
             this.buyPropPrice += prop.price;
         });
         this.sendMoneyLabel.string = this.buyPropPrice.toString();
+
+        if (this.buyingProp.length == 0) {
+            // this.unselectAllTrade();
+            if (this.tradeTypePick == E_TRADE.BUY) {
+                this.setSliderProgress(0);
+                this.deductingPriceLabel.string = "-" + Locals.CURRENCY + this.buyPropPrice;
+                this.deductingPriceLabel.node.color = cc.Color.RED;
+            }
+        } else {
+            if (this.tradeTypePick == E_TRADE.BUY) {
+                this.setSliderProgress(this.buyPropPrice);
+                this.deductingPriceLabel.string = "-" + Locals.CURRENCY + this.buyPropPrice;
+                this.deductingPriceLabel.node.color = cc.Color.RED;
+            }
+        }
+
     }
 
     onSendBtnClick() {
-        cc.Tween.stopAllByTarget(this.askMoneyHighlight);
-        cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
+        if (this.buyingProp.length) {
+            cc.Tween.stopAllByTarget(this.askMoneyHighlight);
+            cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
 
-        this.askMoneyHighlight.opacity = 0;
-        this.highlightNode(this.sendMoneyHighlight);
+            this.askMoneyHighlight.opacity = 0;
+            this.highlightNode(this.sendMoneyHighlight);
 
-        this.setSliderProgress(this.buyPropPrice);
-        this.tradeTypePick = E_TRADE.BUY;
+            this.setSliderProgress(this.buyPropPrice);
+            this.tradeTypePick = E_TRADE.BUY;
+
+            this.deductingPriceLabel.string = "-" + Locals.CURRENCY + this.buyPropPrice;
+            this.deductingPriceLabel.node.color = cc.Color.RED;
+
+        } else {
+            clientEvent.dispatchEvent(Events.onToastMsg, Locals.TRADE_BUY_SELL_ERROR);
+        }
     }
 
     onAskBtnClick() {
+        if (this.sellingProp.length) {
+            cc.Tween.stopAllByTarget(this.askMoneyHighlight);
+            cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
+
+            this.sendMoneyHighlight.opacity = 0;
+            this.highlightNode(this.askMoneyHighlight);
+
+            this.setSliderProgress(this.sellPropPrice);
+            this.tradeTypePick = E_TRADE.SELL;
+
+            this.deductingPriceLabel.string = "-" + Locals.CURRENCY + this.sellPropPrice;
+            this.deductingPriceLabel.node.color = cc.Color.RED;
+        } else {
+            clientEvent.dispatchEvent(Events.onToastMsg, Locals.TRADE_BUY_SELL_ERROR);
+        }
+    }
+
+    unselectAllTrade() {
         cc.Tween.stopAllByTarget(this.askMoneyHighlight);
         cc.Tween.stopAllByTarget(this.sendMoneyHighlight);
-
         this.sendMoneyHighlight.opacity = 0;
-        this.highlightNode(this.askMoneyHighlight);
-
-        this.setSliderProgress(this.sellPropPrice);
-        this.tradeTypePick = E_TRADE.SELL;
+        this.askMoneyHighlight.opacity = 0;
     }
 
     private highlightNode(node: cc.Node) {

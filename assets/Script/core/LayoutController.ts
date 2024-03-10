@@ -8,6 +8,7 @@ import Corner from "../entity/Corner";
 import Dice from "../entity/Dice";
 import Player from "../entity/Player";
 import Station from "../entity/Station";
+import ToastMsg from "../popup/ToastMsg";
 import Popup from "./Popup";
 import Property from "./Property";
 
@@ -69,6 +70,9 @@ export default class LayoutController extends cc.Component {
 
     @property(CheatController)
     cheatController: CheatController = null;
+
+    @property(cc.Node)
+    toastMsg: cc.Node = null;
 
     protected boardData: IConfig;
 
@@ -235,6 +239,9 @@ export default class LayoutController extends cc.Component {
 
     }
 
+    protected showToastMsg(msg: string) {
+        this.toastMsg.getComponent(ToastMsg).show(msg);
+    }
 
     protected showErrorMsg(msg: string) {
         if (this.errorMsg.isErrorPopup) {

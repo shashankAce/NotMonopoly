@@ -398,5 +398,6 @@ export default class BoardController extends LayoutController implements GameEve
         clientEvent.on(Events.onBuyProperty, this.onBuyProperty, this);
         clientEvent.on(Events.onRentPaid, this.onRentPaid, this);
         clientEvent.on(Events.onTradeProperty, this.onTradeProperty, this);
+        clientEvent.on(Events.onToastMsg, this.showToastMsg, this);
     }
 }
